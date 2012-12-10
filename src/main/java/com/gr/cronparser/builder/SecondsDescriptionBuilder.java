@@ -3,7 +3,7 @@
  */
 package com.gr.cronparser.builder;
 
-import org.apache.commons.lang3.StringUtils;
+import java.text.MessageFormat;
 
 
 /**
@@ -14,12 +14,12 @@ public class SecondsDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getSingleItemDescription(String expression) {
-        return StringUtils.leftPad(expression, 2, '0');
+        return expression;
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return String.format("every {0} seconds", expression);
+        return MessageFormat.format("every {0} seconds", expression);
     }
 
     @Override

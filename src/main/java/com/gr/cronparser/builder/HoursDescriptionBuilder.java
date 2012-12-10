@@ -3,9 +3,9 @@
  */
 package com.gr.cronparser.builder;
 
-import org.apache.commons.lang3.StringUtils;
+import java.text.MessageFormat;
 
-import com.gr.cronparser.CronExpressionUtils;
+import com.gr.cronparser.DateAndTimeUtils;
 
 
 /**
@@ -16,12 +16,12 @@ public class HoursDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getSingleItemDescription(String expression) {
-        return CronExpressionUtils.formatTime(expression, "0");
+        return DateAndTimeUtils.formatTime(expression, "0");
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return String.format("every {0} hours", StringUtils.leftPad(expression, 2, '0'));
+        return MessageFormat.format("every {0} " + plural(Integer.parseInt(expression), "hour", "hours"), expression);
     }
 
     @Override

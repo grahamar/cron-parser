@@ -3,12 +3,10 @@
  */
 package com.gr.cronparser;
 
-import hirondelle.date4j.DateTime;
-
 import java.text.ParseException;
-import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 
 /**
@@ -18,11 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 public class ExpressionParser {
 
     private final String expression;
-    private final Options options;
 
-    public ExpressionParser(String expression, Options options) {
+    public ExpressionParser(String expression) {
         this.expression = expression;
-        this.options = options;
     }
 
     public String[] parse() throws ParseException {
@@ -73,16 +69,13 @@ public class ExpressionParser {
 
         // convert SUN-SAT format to 0-6 format
         for (int i = 0; i <= 6; i++) {
-            if (!options.isDayOfWeekStartAtZero()) {
-                expressionParts[5] = expressionParts[5].replace(String.valueOf(i + 1), String.valueOf(i));
-            }
-            expressionParts[5] = expressionParts[5].replace(CronExpressionUtils.getDayOfWeekName(i), String.valueOf(i));
+            expressionParts[5] = expressionParts[5].replace(DateAndTimeUtils.getDayOfWeekName(i + 1), String.valueOf(i));
         }
 
         // convert JAN-DEC format to 1-12 format
         for (int i = 1; i <= 12; i++) {
-            DateTime currentMonth = new DateTime(DateTime.now(TimeZone.getDefault()).getYear(), i, 1, 0, 0, 0, 0);
-            String currentMonthDescription = currentMonth.format("MMM").toUpperCase();
+            DateTime currentMonth = new DateTime().withDayOfMonth(1).withMonthOfYear(i);
+            String currentMonthDescription = currentMonth.toString("MMM").toUpperCase();
             expressionParts[4] = expressionParts[4].replace(currentMonthDescription, String.valueOf(i));
         }
 

@@ -13,13 +13,11 @@ public class Options {
     private boolean throwExceptionOnParseError;
     private CasingTypeEnum casingType;
     private boolean verbose;
-    private boolean dayOfWeekStartAtZero;
 
     public Options() {
         this.throwExceptionOnParseError = true;
         this.casingType = CasingTypeEnum.Sentence;
         this.verbose = false;
-        this.dayOfWeekStartAtZero = true;
     }
 
     /**
@@ -62,20 +60,6 @@ public class Options {
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
-    }
-
-    /**
-     * @return the dayOfWeekStartAtZero
-     */
-    public boolean isDayOfWeekStartAtZero() {
-        return dayOfWeekStartAtZero;
-    }
-
-    /**
-     * @param dayOfWeekStartAtZero the dayOfWeekStartAtZero to set
-     */
-    public void setDayOfWeekStartAtZero(boolean dayOfWeekStartAtZero) {
-        this.dayOfWeekStartAtZero = dayOfWeekStartAtZero;
     }
 
 }

@@ -3,9 +3,13 @@
  */
 package com.gr.cronparser.builder;
 
-import org.apache.commons.lang3.StringUtils;
+import java.text.MessageFormat;
 
-import com.gr.cronparser.CronExpressionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+import org.joda.time.format.DateTimeFormat;
+
+import com.gr.cronparser.DateAndTimeUtils;
 
 
 /**
@@ -18,16 +22,20 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
     protected String getSingleItemDescription(String expression) {
         String exp = expression;
         if (expression.contains("#")) {
-            exp = StringUtils.remove(expression, "#");
+            exp = expression.substring(0, expression.indexOf("#"));
         } else if (expression.contains("L")) {
             exp = exp.replace("L", "");
         }
-        return CronExpressionUtils.getDayOfWeekName(Integer.parseInt(exp));
+        if (StringUtils.isNumeric(exp)) {
+            return DateAndTimeUtils.getDayOfWeekName(Integer.parseInt(exp));
+        } else {
+            return DateTimeFormat.forPattern("EEE").parseDateTime(WordUtils.capitalizeFully(exp)).dayOfWeek().getAsText();
+        }
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return String.format(", every {0} days of the week", expression);
+        return MessageFormat.format(", every {0} days of the week", expression);
     }
 
     @Override

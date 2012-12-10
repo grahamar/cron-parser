@@ -3,6 +3,7 @@
  */
 package com.gr.cronparser;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class CronExpressionDescriptor {
     private static final char[] specialCharacters = new char[] { '/', '-', ',', '*' };
     private final String expression;
     private final Options options;
-    private final String[] expressionParts;
+    private String[] expressionParts;
     private boolean parsed;
 
     public CronExpressionDescriptor(String expression) {
@@ -47,8 +48,8 @@ public class CronExpressionDescriptor {
         String description = "";
         try {
             if (!parsed) {
-                ExpressionParser parser = new ExpressionParser(expression, options);
-                parser.parse();
+                ExpressionParser parser = new ExpressionParser(expression);
+                expressionParts = parser.parse();
                 parsed = true;
             }
             switch (type) {
@@ -122,8 +123,8 @@ public class CronExpressionDescriptor {
             Matcher matcher = pattern.matcher(expression);
             if (matcher.matches()) {
                 int dayNumber = Integer.parseInt(matcher.group().replace("W", ""));
-                String dayString = dayNumber == 1 ? "first weekday" : String.format("weekday nearest day {0}", dayNumber);
-                description = String.format(", on the {0} of the month", dayString);
+                String dayString = dayNumber == 1 ? "first weekday" : MessageFormat.format("weekday nearest day {0}", dayNumber);
+                description = MessageFormat.format(", on the {0} of the month", dayString);
             } else {
                 description = new DayOfMonthDescriptionBuilder().getSegmentDescription(expression, ", every day");
             }
@@ -149,7 +150,7 @@ public class CronExpressionDescriptor {
      * @return
      */
     private String getHoursDescription() {
-        return new HoursDescriptionBuilder().getSegmentDescription(expression, "every hour");
+        return new HoursDescriptionBuilder().getSegmentDescription(expressionParts[2], "every hour");
     }
 
     /**
@@ -162,17 +163,18 @@ public class CronExpressionDescriptor {
         StringBuffer description = new StringBuffer();
         // Handle special cases first
         if (!StringUtils.containsAny(minutesExpression, specialCharacters) && !StringUtils.containsAny(hoursExpression, specialCharacters) && !StringUtils.containsAny(secondsExpression, specialCharacters)) {
-            description.append("At ").append(CronExpressionUtils.formatTime(hoursExpression, minutesExpression, secondsExpression)); // Specific time of day (e.g. 10 14)
+            description.append("At ").append(DateAndTimeUtils.formatTime(hoursExpression, minutesExpression, secondsExpression)); // Specific time of day (e.g. 10 14)
         } else if (minutesExpression.contains("-") && !StringUtils.containsAny(hoursExpression, specialCharacters)) {
             // Minute range in single hour (e.g. 0-10 11)
             String[] minuteParts = minutesExpression.split("-");
-            description.append(String.format("Every minute between {0} and {1}", CronExpressionUtils.formatTime(hoursExpression, minuteParts[0]), CronExpressionUtils.formatTime(hoursExpression, minuteParts[1])));
+            description.append(MessageFormat.format("Every minute between {0} and {1}", DateAndTimeUtils.formatTime(hoursExpression, minuteParts[0]),
+                    DateAndTimeUtils.formatTime(hoursExpression, minuteParts[1])));
         } else if (hoursExpression.contains(",") && !StringUtils.containsAny(minutesExpression, specialCharacters)) {
             // Hours list with single minute (e.g. 30 6,14,16)
             String[] hourParts = hoursExpression.split(",");
             description.append("At");
             for (int i = 0; i < hourParts.length; i++) {
-                description.append(" ").append(CronExpressionUtils.formatTime(hourParts[i], minutesExpression));
+                description.append(" ").append(DateAndTimeUtils.formatTime(hourParts[i], minutesExpression));
                 if (i < hourParts.length - 2) {
                     description.append(",");
                 }
@@ -206,7 +208,7 @@ public class CronExpressionDescriptor {
         String dayOfMonthDesc = getDayOfMonthDescription();
         String monthDesc = getMonthDescription();
         String dayOfWeekDesc = getDayOfWeekDescription();
-        description = String.format("{0}{1}{2}", timeSegment, ((expressionParts[3] == "*") ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
+        description = MessageFormat.format("{0}{1}{2}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
         description = transformVerbosity(description);
         description = transformCase(description);
         return description;
@@ -239,6 +241,9 @@ public class CronExpressionDescriptor {
     private String transformVerbosity(String description) {
         String descTemp = description;
         if (!options.isVerbose()) {
+            descTemp = descTemp.replace("every 1 minute", "every minute");
+            descTemp = descTemp.replace("every 1 hour", "every hour");
+            descTemp = descTemp.replace("every 1 day", "every day");
             descTemp = descTemp.replace(", every minute", "");
             descTemp = descTemp.replace(", every hour", "");
             descTemp = descTemp.replace(", every day", "");

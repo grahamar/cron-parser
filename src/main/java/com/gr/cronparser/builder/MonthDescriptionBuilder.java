@@ -3,9 +3,9 @@
  */
 package com.gr.cronparser.builder;
 
-import org.apache.commons.lang3.StringUtils;
+import java.text.MessageFormat;
 
-import com.gr.cronparser.CronExpressionUtils;
+import org.joda.time.DateTime;
 
 
 /**
@@ -16,22 +16,22 @@ public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getSingleItemDescription(String expression) {
-        return CronExpressionUtils.formatTime(expression, "0");
+        return new DateTime().withDayOfMonth(1).withMonthOfYear(Integer.parseInt(expression)).toString("MMMM");
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return String.format("every {0} hours", StringUtils.leftPad(expression, 2, '0'));
+        return MessageFormat.format(", every {0} " + plural(Integer.parseInt(expression), "month", "months"), expression);
     }
 
     @Override
     protected String getBetweenDescriptionFormat(String expression) {
-        return "between {0} and {1}";
+        return ", {0} through {1}";
     }
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return "at {0}";
+        return ", only in {0}";
     }
 
 }

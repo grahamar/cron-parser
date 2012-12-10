@@ -3,7 +3,7 @@
  */
 package com.gr.cronparser.builder;
 
-import org.apache.commons.lang3.StringUtils;
+import java.text.MessageFormat;
 
 
 /**
@@ -14,12 +14,12 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getSingleItemDescription(String expression) {
-        return StringUtils.leftPad(expression, 2, '0');
+        return expression;
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return String.format("every {0} minutes", StringUtils.leftPad(expression, 2, '0'));
+        return MessageFormat.format("every {0} " + plural(Integer.parseInt(expression), "minute", "minutes"), expression);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return expression == "0" ? "" : "at {0} minutes past the hour";
+        return expression == "0" ? "" : "at {0} " + plural(Integer.parseInt(expression), "minute", "minutes") + " past the hour";
     }
 
 }

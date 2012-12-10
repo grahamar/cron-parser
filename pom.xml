@@ -11,6 +11,7 @@
 		<slf4j.version>1.5.6</slf4j.version>
 		<log4j.version>1.2.14</log4j.version>
 		<commonsLang.version>3.1</commonsLang.version>
+        <jodatime.version>1.6.2</jodatime.version>
 		<junit.version>4.8.2</junit.version>
 		<mockito.version>1.8.5</mockito.version>
 
@@ -40,10 +41,10 @@
 			<version>${commonsLang.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>hirondelle</groupId>
-            <artifactId>date4j</artifactId>
-			<version>1.2</version>
-		</dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${jodatime.version}</version>
+        </dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -59,13 +60,6 @@
 		</dependency>
 	</dependencies>
 	
-	<repositories>
-	   <repository>
-	       <id>Date4j Repository</id>
-	       <url>http://informatics.mayo.edu/maven/content/repositories/public</url>
-	   </repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>

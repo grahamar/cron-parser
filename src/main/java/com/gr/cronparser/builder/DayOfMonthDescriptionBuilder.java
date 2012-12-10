@@ -18,7 +18,7 @@ public class DayOfMonthDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return expression == "1" ? ", every day" : ", every {0} days";
+        return ", every {0} " + plural(Integer.parseInt(expression), "day", "days");
     }
 
     @Override
