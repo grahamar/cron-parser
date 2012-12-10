@@ -32,6 +32,10 @@ public class CronExpressionDescriptor {
     private CronExpressionDescriptor() {
     }
 
+    public static String getDescription(String expression) throws ParseException {
+        return getDescription(DescriptionTypeEnum.FULL, expression, new Options());
+    }
+
     public static String getDescription(DescriptionTypeEnum type, String expression) throws ParseException {
         return getDescription(type, expression, new Options());
     }
