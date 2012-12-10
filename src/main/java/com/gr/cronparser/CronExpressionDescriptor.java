@@ -28,57 +28,46 @@ public class CronExpressionDescriptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(CronExpressionDescriptor.class);
     private static final char[] specialCharacters = new char[] { '/', '-', ',', '*' };
-    private final String expression;
-    private final Options options;
-    private String[] expressionParts;
-    private boolean parsed;
 
-    public CronExpressionDescriptor(String expression) {
-        this(expression, new Options());
+    private CronExpressionDescriptor() {
     }
 
-    public CronExpressionDescriptor(String expression, Options options) {
-        this.expression = expression;
-        this.options = options;
-        this.expressionParts = new String[6];
-        this.parsed = false;
+    public static String getDescription(DescriptionTypeEnum type, String expression) throws ParseException {
+        return getDescription(type, expression, new Options());
     }
 
-    public String getDescription(DescriptionTypeEnum type) throws ParseException {
+    public static String getDescription(DescriptionTypeEnum type, String expression, Options options) throws ParseException {
+        String[] expressionParts = new String[6];
         String description = "";
         try {
-            if (!parsed) {
-                ExpressionParser parser = new ExpressionParser(expression);
-                expressionParts = parser.parse();
-                parsed = true;
-            }
+            expressionParts = ExpressionParser.parse(expression);
             switch (type) {
                 case FULL:
-                    description = getFullDescription();
+                    description = getFullDescription(expression, expressionParts, options);
                     break;
                 case TIMEOFDAY:
-                    description = getTimeOfDayDescription();
+                    description = getTimeOfDayDescription(expression, expressionParts, options);
                     break;
                 case HOURS:
-                    description = getHoursDescription();
+                    description = getHoursDescription(expression, expressionParts, options);
                     break;
                 case MINUTES:
-                    description = getMinutesDescription();
+                    description = getMinutesDescription(expression, expressionParts, options);
                     break;
                 case SECONDS:
-                    description = getSecondsDescription();
+                    description = getSecondsDescription(expression, expressionParts, options);
                     break;
                 case DAYOFMONTH:
-                    description = getDayOfMonthDescription();
+                    description = getDayOfMonthDescription(expression, expressionParts, options);
                     break;
                 case MONTH:
-                    description = getMonthDescription();
+                    description = getMonthDescription(expression, expressionParts, options);
                     break;
                 case DAYOFWEEK:
-                    description = getDayOfWeekDescription();
+                    description = getDayOfWeekDescription(expression, expressionParts, options);
                     break;
                 default:
-                    description = getSecondsDescription();
+                    description = getSecondsDescription(expression, expressionParts, options);
                     break;
             }
         } catch (ParseException e) {
@@ -94,69 +83,89 @@ public class CronExpressionDescriptor {
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getDayOfWeekDescription() {
+    private static String getDayOfWeekDescription(String expression, String[] expressionParts, Options options) {
         return new DayOfWeekDescriptionBuilder().getSegmentDescription(expressionParts[5], ", every day");
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getMonthDescription() {
+    private static String getMonthDescription(String expression, String[] expressionParts, Options options) {
         return new MonthDescriptionBuilder().getSegmentDescription(expressionParts[4], "");
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getDayOfMonthDescription() {
+    private static String getDayOfMonthDescription(String expression, String[] expressionParts, Options options) {
         String description = null;
-        String expression = expressionParts[3];
-        expression = expression.replace("?", "*");
-        if ("L".equals(expression)) {
+        String exp = expressionParts[3].replace("?", "*");
+        if ("L".equals(exp)) {
             description = ", on the last day of the month";
-        } else if ("WL".equals(expression) || "LW".equals(expression)) {
+        } else if ("WL".equals(exp) || "LW".equals(exp)) {
             description = ", on the last weekday of the month";
         } else {
             Pattern pattern = Pattern.compile("(\\dW)|(W\\d)");
-            Matcher matcher = pattern.matcher(expression);
+            Matcher matcher = pattern.matcher(exp);
             if (matcher.matches()) {
                 int dayNumber = Integer.parseInt(matcher.group().replace("W", ""));
                 String dayString = dayNumber == 1 ? "first weekday" : MessageFormat.format("weekday nearest day {0}", dayNumber);
                 description = MessageFormat.format(", on the {0} of the month", dayString);
             } else {
-                description = new DayOfMonthDescriptionBuilder().getSegmentDescription(expression, ", every day");
+                description = new DayOfMonthDescriptionBuilder().getSegmentDescription(exp, ", every day");
             }
         }
         return description;
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getSecondsDescription() {
+    private static String getSecondsDescription(String expression, String[] expressionParts, Options options) {
         return new SecondsDescriptionBuilder().getSegmentDescription(expressionParts[0], "every second");
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getMinutesDescription() {
+    private static String getMinutesDescription(String expression, String[] expressionParts, Options options) {
         return new MinutesDescriptionBuilder().getSegmentDescription(expressionParts[1], "every minute");
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getHoursDescription() {
+    private static String getHoursDescription(String expression, String[] expressionParts, Options options) {
         return new HoursDescriptionBuilder().getSegmentDescription(expressionParts[2], "every hour");
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getTimeOfDayDescription() {
+    private static String getTimeOfDayDescription(String expression, String[] expressionParts, Options options) {
         String secondsExpression = expressionParts[0];
         String minutesExpression = expressionParts[1];
         String hoursExpression = expressionParts[2];
@@ -183,9 +192,9 @@ public class CronExpressionDescriptor {
                 }
             }
         } else {
-            String secondsDescription = getSecondsDescription();
-            String minutesDescription = getMinutesDescription();
-            String hoursDescription = getHoursDescription();
+            String secondsDescription = getSecondsDescription(expression, expressionParts, options);
+            String minutesDescription = getMinutesDescription(expression, expressionParts, options);
+            String hoursDescription = getHoursDescription(expression, expressionParts, options);
             description.append(secondsDescription);
             if (description.length() > 0) {
                 description.append(", ");
@@ -200,17 +209,20 @@ public class CronExpressionDescriptor {
     }
 
     /**
+     * @param options
+     * @param expressionParts
+     * @param expression
      * @return
      */
-    private String getFullDescription() {
+    private static String getFullDescription(String expression, String[] expressionParts, Options options) {
         String description = "";
-        String timeSegment = getTimeOfDayDescription();
-        String dayOfMonthDesc = getDayOfMonthDescription();
-        String monthDesc = getMonthDescription();
-        String dayOfWeekDesc = getDayOfWeekDescription();
+        String timeSegment = getTimeOfDayDescription(expression, expressionParts, options);
+        String dayOfMonthDesc = getDayOfMonthDescription(expression, expressionParts, options);
+        String monthDesc = getMonthDescription(expression, expressionParts, options);
+        String dayOfWeekDesc = getDayOfWeekDescription(expression, expressionParts, options);
         description = MessageFormat.format("{0}{1}{2}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
-        description = transformVerbosity(description);
-        description = transformCase(description);
+        description = transformVerbosity(description, options);
+        description = transformCase(description, options);
         return description;
     }
 
@@ -218,7 +230,7 @@ public class CronExpressionDescriptor {
      * @param description
      * @return
      */
-    private String transformCase(String description) {
+    private static String transformCase(String description, Options options) {
         String descTemp = description;
         switch (options.getCasingType()) {
             case Sentence:
@@ -236,9 +248,10 @@ public class CronExpressionDescriptor {
 
     /**
      * @param description
+     * @param options
      * @return
      */
-    private String transformVerbosity(String description) {
+    private static String transformVerbosity(String description, Options options) {
         String descTemp = description;
         if (!options.isVerbose()) {
             descTemp = descTemp.replace("every 1 minute", "every minute");

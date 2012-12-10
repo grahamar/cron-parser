@@ -15,13 +15,10 @@ import org.joda.time.DateTime;
  */
 public class ExpressionParser {
 
-    private final String expression;
-
-    public ExpressionParser(String expression) {
-        this.expression = expression;
+    private ExpressionParser() {
     }
 
-    public String[] parse() throws ParseException {
+    public static String[] parse(String expression) throws ParseException {
         String[] parsed = new String[6];
         if (StringUtils.isEmpty(expression)) {
             throw new IllegalArgumentException("Expression cannot be null or empty");
@@ -47,7 +44,7 @@ public class ExpressionParser {
     /**
      * @param expressionParts
      */
-    private void normaliseExpression(String[] expressionParts) {
+    private static void normaliseExpression(String[] expressionParts) {
         // Convert ? to * only for day of month and day of week
         expressionParts[3] = expressionParts[3].replace('?', '*');
         expressionParts[5] = expressionParts[5].replace('?', '*');
