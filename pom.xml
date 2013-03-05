@@ -53,6 +53,10 @@
 			<url>https://repository-redhogs.forge.cloudbees.com/snapshot/ </url>
 		</snapshotRepository>
 	</distributionManagement>
+	<ciManagement>
+		<system>jenkins</system>
+    	<url>https://redhogs.ci.cloudbees.com/job/Cron%20Parser/</url>
+	</ciManagement>
 
 	<properties>
 		<slf4j.version>1.5.6</slf4j.version>
