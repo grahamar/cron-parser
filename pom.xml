@@ -1,14 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.gr.cronparser</groupId>
+	<groupId>net.redhogs.cronparser</groupId>
 	<artifactId>cron-parser</artifactId>
 	<version>1.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
 
 	<name>cron-parser</name>
 	<description>A Java library that converts cron expressions into human readable strings</description>
-	<url>https://github.com/grahamar/cron-parser</url>
+	<url>http://cron-parser.redhogs.net</url>
 
 	<licenses>
 		<license>
@@ -18,24 +18,40 @@
 		</license>
 	</licenses>
 
+	<organization>
+		<name>RedHogs</name>
+		<url>http://www.redhogs.net</url>
+	</organization>
 	<developers>
 		<developer>
 			<id>grhodes</id>
 			<name>Graham Rhodes</name>
+			<url>https://github.com/grahamar</url>
 		</developer>
 	</developers>
 
+	<issueManagement>
+		<url>https://github.com/RedHogs/cron-parser/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
 	<scm>
-		<connection>scm:git:git@github.com:grahamar/cron-parser.git</connection>
-		<url>scm:git:git@github.com:grahamar/cron-parser.git</url>
-		<developerConnection>scm:git:git@github.com:grahamar/cron-parser.git</developerConnection>
+		<url>https://github.com/RedHogs/cron-parser</url>
+		<connection>scm:git:git@github.com:RedHogs/cron-parser.git</connection>
+		<developerConnection>scm:git:git@github.com:RedHogs/cron-parser.git</developerConnection>
 	</scm>
 
 	<distributionManagement>
 		<repository>
-			<id>github-repo</id>
-			<url>http://central_nexus/server</url>
+			<id>orgRele</id>
+			<name>Organisation Release Repository</name>
+			<url>https://repository-redhogs.forge.cloudbees.com/release/ </url>
 		</repository>
+		<snapshotRepository>
+			<id>orgSnap</id>
+			<name>Organisation Snapshots Repository</name>
+			<url>https://repository-redhogs.forge.cloudbees.com/snapshot/ </url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<properties>
@@ -45,6 +61,7 @@
 		<jodatime.version>1.6.2</jodatime.version>
 		<junit.version>4.8.2</junit.version>
 
+		<github.global.server>github</github.global.server>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -147,31 +164,55 @@
 					<mavenExecutorId>forked-path</mavenExecutorId>
 				</configuration>
 			</plugin>
-			<!-- Skip the deploy plugin as we're uploading it to github -->
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>com.github.github</groupId>
-				<artifactId>downloads-maven-plugin</artifactId>
-				<version>0.6</version>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.7</version>
 				<configuration>
-					<description>Official ${project.name} build of the ${project.version} release</description>
-					<override>true</override>
-					<includeAttached>true</includeAttached>
+					<message>Building site for ${project.version}</message>
 					<server>github</server>
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
-							<goal>upload</goal>
+							<goal>site</goal>
 						</goals>
-						<phase>deploy</phase>
+						<phase>site</phase>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>2.2</version>
+							<configuration>
+								<dependencyDetailsEnabled>true</dependencyDetailsEnabled>
+								<dependencyLocationsEnabled>true</dependencyLocationsEnabled>
+							</configuration>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.7</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-surefire-report-plugin</artifactId>
+							<version>2.6</version>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-checkstyle-plugin</artifactId>
+							<version>2.6</version>
+						</plugin>
+					</reportPlugins>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
