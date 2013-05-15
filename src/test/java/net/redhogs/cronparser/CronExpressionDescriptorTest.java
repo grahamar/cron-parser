@@ -3,11 +3,8 @@
  */
 package net.redhogs.cronparser;
 
-import net.redhogs.cronparser.CronExpressionDescriptor;
-
 import org.junit.Assert;
 import org.junit.Test;
-
 
 
 /**
@@ -150,7 +147,7 @@ public class CronExpressionDescriptorTest {
     @Test
     public void testSecondMinutesHoursIntervals() throws Exception {
         Assert.assertEquals("Seconds 5 through 10 past the minute, minutes 30 through 35 past the hour, between 10:00 AM and 12:00 PM",
- CronExpressionDescriptor.getDescription("5-10 30-35 10-12 * * *"));
+                CronExpressionDescriptor.getDescription("5-10 30-35 10-12 * * *"));
     }
 
     @Test
@@ -161,7 +158,7 @@ public class CronExpressionDescriptorTest {
     @Test
     public void testMinutesPastTheHourRange() throws Exception {
         Assert.assertEquals("At 30 minutes past the hour, between 10:00 AM and 1:00 PM, only on Wednesday and Friday",
- CronExpressionDescriptor.getDescription("0 30 10-13 ? * WED,FRI"));
+                CronExpressionDescriptor.getDescription("0 30 10-13 ? * WED,FRI"));
     }
 
     @Test
@@ -183,6 +180,14 @@ public class CronExpressionDescriptorTest {
     @Test
     public void testMinutesPastTheHour() throws Exception {
         Assert.assertEquals("At 5 minutes past the hour", CronExpressionDescriptor.getDescription("0 5 0/1 * * ?"));
+    }
+
+    /**
+     * @since https://github.com/RedHogs/cron-parser/issues/2
+     */
+    @Test
+    public void testEveryPastTheHour() throws Exception {
+        Assert.assertEquals("At 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, and 55 minutes past the hour", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *"));
     }
 
 }

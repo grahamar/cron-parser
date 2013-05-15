@@ -21,7 +21,7 @@ public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format(", every {0} " + plural(Integer.parseInt(expression), "month", "months"), expression);
+        return MessageFormat.format(", every {0} " + plural(expression, "month", "months"), expression);
     }
 
     @Override

@@ -51,4 +51,21 @@ public final class DateAndTimeUtils {
         return new DateTime().withDayOfWeek(dayOfWeek).dayOfWeek().getAsText();
     }
 
+    /**
+     * @param minutesExpression
+     * @return
+     * @since https://github.com/RedHogs/cron-parser/issues/2
+     */
+    public static String formatMinutes(String minutesExpression) {
+        if (StringUtils.contains(minutesExpression, ",")) {
+            StringBuffer formattedExpression = new StringBuffer();
+            for (String minute : StringUtils.split(minutesExpression, ',')) {
+                formattedExpression.append(StringUtils.leftPad(minute, 2, '0'));
+                formattedExpression.append(",");
+            }
+            return formattedExpression.toString();
+        }
+        return StringUtils.leftPad(minutesExpression, 2, '0');
+    }
+
 }

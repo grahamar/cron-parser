@@ -6,6 +6,7 @@ package net.redhogs.cronparser.builder;
 import java.text.MessageFormat;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 
 /**
@@ -40,13 +41,13 @@ public abstract class AbstractDescriptionBuilder {
             String[] segments = expression.split(",");
             String descriptionContent = "";
             for (int i = 0; i < segments.length; i++) {
-                if (i > 0 && segments.length > 2) {
+                if ((i > 0) && (segments.length > 2)) {
                     descriptionContent += ",";
-                    if (i < segments.length - 1) {
+                    if (i < (segments.length - 1)) {
                         descriptionContent += " ";
                     }
                 }
-                if (i > 0 && segments.length > 1 && (i == segments.length - 1 || segments.length == 2)) {
+                if ((i > 0) && (segments.length > 1) && ((i == (segments.length - 1)) || (segments.length == 2))) {
                     descriptionContent += " and ";
                 }
                 descriptionContent += getSingleItemDescription(segments[i]);
@@ -85,9 +86,24 @@ public abstract class AbstractDescriptionBuilder {
      * @param singular
      * @param plural
      * @return
+     * @deprecated Use plural(String, String, String) instead
      */
+    @Deprecated
     protected String plural(int num, String singular, String plural) {
-        if (num > 1) {
+        return plural(String.valueOf(num), singular, plural);
+    }
+
+    /**
+     * @param num
+     * @param singular
+     * @param plural
+     * @return
+     * @since https://github.com/RedHogs/cron-parser/issues/2
+     */
+    protected String plural(String expression, String singular, String plural) {
+        if (NumberUtils.isNumber(expression) && (Integer.parseInt(expression) > 1)) {
+            return plural;
+        } else if (StringUtils.contains(expression, ",")) {
             return plural;
         }
         return singular;

@@ -4,7 +4,6 @@
 package net.redhogs.cronparser.builder;
 
 
-
 /**
  * @author grhodes
  * @since 10 Dec 2012 14:24:08
@@ -18,7 +17,7 @@ public class DayOfMonthDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return ", every {0} " + plural(Integer.parseInt(expression), "day", "days");
+        return ", every {0} " + plural(expression, "day", "days");
     }
 
     @Override

@@ -8,7 +8,6 @@ import java.text.MessageFormat;
 import net.redhogs.cronparser.DateAndTimeUtils;
 
 
-
 /**
  * @author grhodes
  * @since 10 Dec 2012 14:18:21
@@ -22,7 +21,7 @@ public class HoursDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format("every {0} " + plural(Integer.parseInt(expression), "hour", "hours"), expression);
+        return MessageFormat.format("every {0} " + plural(expression, "hour", "hours"), expression);
     }
 
     @Override

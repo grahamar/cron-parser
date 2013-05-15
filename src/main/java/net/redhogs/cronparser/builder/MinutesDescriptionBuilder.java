@@ -5,6 +5,8 @@ package net.redhogs.cronparser.builder;
 
 import java.text.MessageFormat;
 
+import net.redhogs.cronparser.DateAndTimeUtils;
+
 
 /**
  * @author grhodes
@@ -14,12 +16,12 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getSingleItemDescription(String expression) {
-        return expression;
+        return DateAndTimeUtils.formatMinutes(expression);
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format("every {0} " + plural(Integer.parseInt(expression), "minute", "minutes"), expression);
+        return MessageFormat.format("every {0} " + plural(expression, "minute", "minutes"), expression);
     }
 
     @Override
@@ -29,7 +31,7 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return expression == "0" ? "" : "at {0} " + plural(Integer.parseInt(expression), "minute", "minutes") + " past the hour";
+        return expression == "0" ? "" : "at {0} " + plural(expression, "minute", "minutes") + " past the hour";
     }
 
 }
