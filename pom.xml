@@ -9,7 +9,7 @@
 	
 	<groupId>net.redhogs.cronparser</groupId>
 	<artifactId>cron-parser</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 
 	<name>cron-parser</name>
 	<description>A Java library that converts cron expressions into human readable strings</description>
