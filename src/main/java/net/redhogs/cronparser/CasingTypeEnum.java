@@ -1,8 +1,4 @@
-/**
- * 
- */
 package net.redhogs.cronparser;
-
 
 /**
  * @author grhodes

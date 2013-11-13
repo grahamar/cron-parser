@@ -1,13 +1,9 @@
-/**
- * 
- */
 package net.redhogs.cronparser;
-
-import java.text.MessageFormat;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import java.text.MessageFormat;
 
 /**
  * @author grhodes
@@ -35,7 +31,7 @@ public final class DateAndTimeUtils {
      */
     public static String formatTime(String hoursExpression, String minutesExpression, String secondsExpression) {
         int hour = Integer.parseInt(hoursExpression);
-        String amPM = hour >= 12 ? "PM" : "AM";
+        String amPM = hour >= 12 ? I18nMessages.get("time_pm") : I18nMessages.get("time_am");
         if (hour > 12) {
             hour -= 12;
         }
@@ -48,7 +44,7 @@ public final class DateAndTimeUtils {
     }
 
     public static String getDayOfWeekName(int dayOfWeek) {
-        return new DateTime().withDayOfWeek(dayOfWeek).dayOfWeek().getAsText();
+        return new DateTime().withDayOfWeek(dayOfWeek).dayOfWeek().getAsText(I18nMessages.getCurrentLocale());
     }
 
     /**
@@ -58,7 +54,7 @@ public final class DateAndTimeUtils {
      */
     public static String formatMinutes(String minutesExpression) {
         if (StringUtils.contains(minutesExpression, ",")) {
-            StringBuffer formattedExpression = new StringBuffer();
+            StringBuilder formattedExpression = new StringBuilder();
             for (String minute : StringUtils.split(minutesExpression, ',')) {
                 formattedExpression.append(StringUtils.leftPad(minute, 2, '0'));
                 formattedExpression.append(",");

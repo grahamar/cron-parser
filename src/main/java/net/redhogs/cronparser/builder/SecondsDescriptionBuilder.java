@@ -1,10 +1,8 @@
-/**
- * 
- */
 package net.redhogs.cronparser.builder;
 
-import java.text.MessageFormat;
+import net.redhogs.cronparser.I18nMessages;
 
+import java.text.MessageFormat;
 
 /**
  * @author grhodes
@@ -19,17 +17,17 @@ public class SecondsDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format("every {0} seconds", expression);
+        return MessageFormat.format(I18nMessages.get("every_x_seconds"), expression);
     }
 
     @Override
     protected String getBetweenDescriptionFormat(String expression) {
-        return "seconds {0} through {1} past the minute";
+        return I18nMessages.get("seconds_through_past_the_minute");
     }
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return "at {0} seconds past the minute";
+        return I18nMessages.get("at_x_seconds_past_the_minute");
     }
 
 }

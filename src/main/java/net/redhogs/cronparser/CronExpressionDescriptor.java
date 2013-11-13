@@ -1,25 +1,15 @@
-/**
- * 
- */
 package net.redhogs.cronparser;
 
-import java.text.MessageFormat;
-import java.text.ParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import net.redhogs.cronparser.builder.DayOfMonthDescriptionBuilder;
-import net.redhogs.cronparser.builder.DayOfWeekDescriptionBuilder;
-import net.redhogs.cronparser.builder.HoursDescriptionBuilder;
-import net.redhogs.cronparser.builder.MinutesDescriptionBuilder;
-import net.redhogs.cronparser.builder.MonthDescriptionBuilder;
-import net.redhogs.cronparser.builder.SecondsDescriptionBuilder;
-
+import net.redhogs.cronparser.builder.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+import java.text.MessageFormat;
+import java.text.ParseException;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author grhodes
@@ -34,45 +24,58 @@ public class CronExpressionDescriptor {
     }
 
     public static String getDescription(String expression) throws ParseException {
-        return getDescription(DescriptionTypeEnum.FULL, expression, new Options());
+        return getDescription(DescriptionTypeEnum.FULL, expression, new Options(), I18nMessages.DEFAULT_LOCALE);
+    }
+
+    public static String getDescription(String expression, Locale locale) throws ParseException {
+        return getDescription(DescriptionTypeEnum.FULL, expression, new Options(), locale);
     }
 
     public static String getDescription(DescriptionTypeEnum type, String expression) throws ParseException {
-        return getDescription(type, expression, new Options());
+        return getDescription(type, expression, new Options(), I18nMessages.DEFAULT_LOCALE);
+    }
+
+    public static String getDescription(DescriptionTypeEnum type, String expression, Locale locale) throws ParseException {
+        return getDescription(type, expression, new Options(), locale);
     }
 
     public static String getDescription(DescriptionTypeEnum type, String expression, Options options) throws ParseException {
-        String[] expressionParts = new String[6];
+        return getDescription(type, expression, options, I18nMessages.DEFAULT_LOCALE);
+    }
+
+    public static String getDescription(DescriptionTypeEnum type, String expression, Options options, Locale locale) throws ParseException {
+        I18nMessages.setCurrentLocale(locale);
+        String[] expressionParts;
         String description = "";
         try {
             expressionParts = ExpressionParser.parse(expression);
             switch (type) {
                 case FULL:
-                    description = getFullDescription(expression, expressionParts, options);
+                    description = getFullDescription(expressionParts, options);
                     break;
                 case TIMEOFDAY:
-                    description = getTimeOfDayDescription(expression, expressionParts, options);
+                    description = getTimeOfDayDescription(expressionParts);
                     break;
                 case HOURS:
-                    description = getHoursDescription(expression, expressionParts, options);
+                    description = getHoursDescription(expressionParts);
                     break;
                 case MINUTES:
-                    description = getMinutesDescription(expression, expressionParts, options);
+                    description = getMinutesDescription(expressionParts);
                     break;
                 case SECONDS:
-                    description = getSecondsDescription(expression, expressionParts, options);
+                    description = getSecondsDescription(expressionParts);
                     break;
                 case DAYOFMONTH:
-                    description = getDayOfMonthDescription(expression, expressionParts, options);
+                    description = getDayOfMonthDescription(expressionParts);
                     break;
                 case MONTH:
-                    description = getMonthDescription(expression, expressionParts, options);
+                    description = getMonthDescription(expressionParts);
                     break;
                 case DAYOFWEEK:
-                    description = getDayOfWeekDescription(expression, expressionParts, options);
+                    description = getDayOfWeekDescription(expressionParts);
                     break;
                 default:
-                    description = getSecondsDescription(expression, expressionParts, options);
+                    description = getSecondsDescription(expressionParts);
                     break;
             }
         } catch (ParseException e) {
@@ -88,118 +91,105 @@ public class CronExpressionDescriptor {
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getDayOfWeekDescription(String expression, String[] expressionParts, Options options) {
-        return new DayOfWeekDescriptionBuilder().getSegmentDescription(expressionParts[5], ", every day");
+    private static String getDayOfWeekDescription(String[] expressionParts) {
+        return new DayOfWeekDescriptionBuilder().getSegmentDescription(expressionParts[5], ", "+I18nMessages.get("every_day"));
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getMonthDescription(String expression, String[] expressionParts, Options options) {
+    private static String getMonthDescription(String[] expressionParts) {
         return new MonthDescriptionBuilder().getSegmentDescription(expressionParts[4], "");
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getDayOfMonthDescription(String expression, String[] expressionParts, Options options) {
+    private static String getDayOfMonthDescription(String[] expressionParts) {
         String description = null;
         String exp = expressionParts[3].replace("?", "*");
         if ("L".equals(exp)) {
-            description = ", on the last day of the month";
+            description = ", "+I18nMessages.get("on_the_last_day_of_the_month");
         } else if ("WL".equals(exp) || "LW".equals(exp)) {
-            description = ", on the last weekday of the month";
+            description = ", "+I18nMessages.get("on_the_last_weekday_of_the_month");
         } else {
             Pattern pattern = Pattern.compile("(\\dW)|(W\\d)");
             Matcher matcher = pattern.matcher(exp);
             if (matcher.matches()) {
                 int dayNumber = Integer.parseInt(matcher.group().replace("W", ""));
-                String dayString = dayNumber == 1 ? "first weekday" : MessageFormat.format("weekday nearest day {0}", dayNumber);
-                description = MessageFormat.format(", on the {0} of the month", dayString);
+                String dayString = dayNumber == 1 ? I18nMessages.get("first_weekday") : MessageFormat.format(I18nMessages.get("weekday_nearest_day"), dayNumber);
+                description = MessageFormat.format(", "+I18nMessages.get("on_the_of_the_month"), dayString);
             } else {
-                description = new DayOfMonthDescriptionBuilder().getSegmentDescription(exp, ", every day");
+                description = new DayOfMonthDescriptionBuilder().getSegmentDescription(exp, ", "+I18nMessages.get("every_day"));
             }
         }
         return description;
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getSecondsDescription(String expression, String[] expressionParts, Options options) {
-        return new SecondsDescriptionBuilder().getSegmentDescription(expressionParts[0], "every second");
+    private static String getSecondsDescription(String[] expressionParts) {
+        return new SecondsDescriptionBuilder().getSegmentDescription(expressionParts[0], I18nMessages.get("every_second"));
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getMinutesDescription(String expression, String[] expressionParts, Options options) {
-        return new MinutesDescriptionBuilder().getSegmentDescription(expressionParts[1], "every minute");
+    private static String getMinutesDescription(String[] expressionParts) {
+        return new MinutesDescriptionBuilder().getSegmentDescription(expressionParts[1], I18nMessages.get("every_minute"));
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getHoursDescription(String expression, String[] expressionParts, Options options) {
-        return new HoursDescriptionBuilder().getSegmentDescription(expressionParts[2], "every hour");
+    private static String getHoursDescription(String[] expressionParts) {
+        return new HoursDescriptionBuilder().getSegmentDescription(expressionParts[2], I18nMessages.get("every_hour"));
     }
 
     /**
-     * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getTimeOfDayDescription(String expression, String[] expressionParts, Options options) {
+    private static String getTimeOfDayDescription(String[] expressionParts) {
         String secondsExpression = expressionParts[0];
         String minutesExpression = expressionParts[1];
         String hoursExpression = expressionParts[2];
-        StringBuffer description = new StringBuffer();
+        StringBuilder description = new StringBuilder();
         // Handle special cases first
         if (!StringUtils.containsAny(minutesExpression, specialCharacters) && !StringUtils.containsAny(hoursExpression, specialCharacters) && !StringUtils.containsAny(secondsExpression, specialCharacters)) {
-            description.append("At ").append(DateAndTimeUtils.formatTime(hoursExpression, minutesExpression, secondsExpression)); // Specific time of day (e.g. 10 14)
+            description.append(I18nMessages.get("at")).append(" ").append(DateAndTimeUtils.formatTime(hoursExpression, minutesExpression, secondsExpression)); // Specific time of day (e.g. 10 14)
         } else if (minutesExpression.contains("-") && !StringUtils.containsAny(hoursExpression, specialCharacters)) {
             // Minute range in single hour (e.g. 0-10 11)
             String[] minuteParts = minutesExpression.split("-");
-            description.append(MessageFormat.format("Every minute between {0} and {1}", DateAndTimeUtils.formatTime(hoursExpression, minuteParts[0]),
+            description.append(MessageFormat.format(I18nMessages.get("every_minute_between"), DateAndTimeUtils.formatTime(hoursExpression, minuteParts[0]),
                     DateAndTimeUtils.formatTime(hoursExpression, minuteParts[1])));
         } else if (hoursExpression.contains(",") && !StringUtils.containsAny(minutesExpression, specialCharacters)) {
             // Hours list with single minute (e.g. 30 6,14,16)
             String[] hourParts = hoursExpression.split(",");
-            description.append("At");
+            description.append(I18nMessages.get("at"));
             for (int i = 0; i < hourParts.length; i++) {
                 description.append(" ").append(DateAndTimeUtils.formatTime(hourParts[i], minutesExpression));
                 if (i < hourParts.length - 2) {
                     description.append(",");
                 }
                 if (i == hourParts.length - 2) {
-                    description.append(" and");
+                    description.append(" ");
+                    description.append(I18nMessages.get("and"));
                 }
             }
         } else {
-            String secondsDescription = getSecondsDescription(expression, expressionParts, options);
-            String minutesDescription = getMinutesDescription(expression, expressionParts, options);
-            String hoursDescription = getHoursDescription(expression, expressionParts, options);
+            String secondsDescription = getSecondsDescription(expressionParts);
+            String minutesDescription = getMinutesDescription(expressionParts);
+            String hoursDescription = getHoursDescription(expressionParts);
             description.append(secondsDescription);
             if (description.length() > 0) {
                 description.append(", ");
@@ -216,15 +206,14 @@ public class CronExpressionDescriptor {
     /**
      * @param options
      * @param expressionParts
-     * @param expression
      * @return
      */
-    private static String getFullDescription(String expression, String[] expressionParts, Options options) {
+    private static String getFullDescription(String[] expressionParts, Options options) {
         String description = "";
-        String timeSegment = getTimeOfDayDescription(expression, expressionParts, options);
-        String dayOfMonthDesc = getDayOfMonthDescription(expression, expressionParts, options);
-        String monthDesc = getMonthDescription(expression, expressionParts, options);
-        String dayOfWeekDesc = getDayOfWeekDescription(expression, expressionParts, options);
+        String timeSegment = getTimeOfDayDescription(expressionParts);
+        String dayOfMonthDesc = getDayOfMonthDescription(expressionParts);
+        String monthDesc = getMonthDescription(expressionParts);
+        String dayOfWeekDesc = getDayOfWeekDescription(expressionParts);
         description = MessageFormat.format("{0}{1}{2}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
         description = transformVerbosity(description, options);
         description = transformCase(description, options);
@@ -259,12 +248,12 @@ public class CronExpressionDescriptor {
     private static String transformVerbosity(String description, Options options) {
         String descTemp = description;
         if (!options.isVerbose()) {
-            descTemp = descTemp.replace("every 1 minute", "every minute");
-            descTemp = descTemp.replace("every 1 hour", "every hour");
-            descTemp = descTemp.replace("every 1 day", "every day");
-            descTemp = descTemp.replace(", every minute", "");
-            descTemp = descTemp.replace(", every hour", "");
-            descTemp = descTemp.replace(", every day", "");
+            descTemp = descTemp.replace(I18nMessages.get("every_1_minute"), I18nMessages.get("every_minute"));
+            descTemp = descTemp.replace(I18nMessages.get("every_1_hour"), I18nMessages.get("every_hour"));
+            descTemp = descTemp.replace(I18nMessages.get("every_1_day"), I18nMessages.get("every_day"));
+            descTemp = descTemp.replace(", "+I18nMessages.get("every_minute"), "");
+            descTemp = descTemp.replace(", "+I18nMessages.get("every_hour"), "");
+            descTemp = descTemp.replace(", "+I18nMessages.get("every_day"), "");
         }
         return descTemp;
     }

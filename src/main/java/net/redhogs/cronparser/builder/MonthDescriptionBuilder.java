@@ -1,12 +1,9 @@
-/**
- * 
- */
 package net.redhogs.cronparser.builder;
 
-import java.text.MessageFormat;
-
+import net.redhogs.cronparser.I18nMessages;
 import org.joda.time.DateTime;
 
+import java.text.MessageFormat;
 
 /**
  * @author grhodes
@@ -16,22 +13,24 @@ public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getSingleItemDescription(String expression) {
-        return new DateTime().withDayOfMonth(1).withMonthOfYear(Integer.parseInt(expression)).toString("MMMM");
+        return new DateTime().withDayOfMonth(1).withMonthOfYear(Integer.parseInt(expression)).
+                toString("MMMM", I18nMessages.getCurrentLocale());
     }
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format(", every {0} " + plural(expression, "month", "months"), expression);
+        return MessageFormat.format(", "+I18nMessages.get("every_x")+" " +
+                plural(expression, I18nMessages.get("month"), I18nMessages.get("months")), expression);
     }
 
     @Override
     protected String getBetweenDescriptionFormat(String expression) {
-        return ", {0} through {1}";
+        return ", "+I18nMessages.get("between_description_format");
     }
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return ", only in {0}";
+        return ", "+I18nMessages.get("only_in");
     }
 
 }

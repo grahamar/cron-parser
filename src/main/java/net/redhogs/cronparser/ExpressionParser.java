@@ -1,19 +1,15 @@
-/**
- * 
- */
 package net.redhogs.cronparser;
-
-import java.text.ParseException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import java.text.ParseException;
 
 /**
  * @author grhodes
  * @since 10 Dec 2012 10:58:21
  */
-public class ExpressionParser {
+class ExpressionParser {
 
     private ExpressionParser() {
     }
@@ -21,7 +17,7 @@ public class ExpressionParser {
     public static String[] parse(String expression) throws ParseException {
         String[] parsed = new String[6];
         if (StringUtils.isEmpty(expression)) {
-            throw new IllegalArgumentException("Expression cannot be null or empty");
+            throw new IllegalArgumentException(I18nMessages.get("expression_empty_exception"));
         }
 
         String[] expressionParts = expression.split(" ");
@@ -59,25 +55,29 @@ public class ExpressionParser {
 
         // convert */1 to *
         for (int i = 0; i <= 5; i++) {
-            if (expressionParts[i] == "*/1") {
+            if ("*/1".equals(expressionParts[i])) {
                 expressionParts[i] = "*";
             }
         }
 
         // convert SUN-SAT format to 0-6 format
-        for (int i = 0; i <= 6; i++) {
-            expressionParts[5] = expressionParts[5].replace(DateAndTimeUtils.getDayOfWeekName(i + 1), String.valueOf(i));
+        if(!StringUtils.isNumeric(expressionParts[5])) {
+            for (int i = 0; i <= 6; i++) {
+                expressionParts[5] = expressionParts[5].replace(DateAndTimeUtils.getDayOfWeekName(i + 1), String.valueOf(i));
+            }
         }
 
         // convert JAN-DEC format to 1-12 format
-        for (int i = 1; i <= 12; i++) {
-            DateTime currentMonth = new DateTime().withDayOfMonth(1).withMonthOfYear(i);
-            String currentMonthDescription = currentMonth.toString("MMM").toUpperCase();
-            expressionParts[4] = expressionParts[4].replace(currentMonthDescription, String.valueOf(i));
+        if(!StringUtils.isNumeric(expressionParts[4])) {
+            for (int i = 1; i <= 12; i++) {
+                DateTime currentMonth = new DateTime().withDayOfMonth(1).withMonthOfYear(i);
+                String currentMonthDescription = currentMonth.toString("MMM").toUpperCase();
+                expressionParts[4] = expressionParts[4].replace(currentMonthDescription, String.valueOf(i));
+            }
         }
 
         // convert 0 second to (empty)
-        if (expressionParts[0] == "0") {
+        if ("0".equals(expressionParts[0])) {
             expressionParts[0] = StringUtils.EMPTY;
         }
     }

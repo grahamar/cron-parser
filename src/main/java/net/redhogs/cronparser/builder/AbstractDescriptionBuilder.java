@@ -1,13 +1,10 @@
-/**
- * 
- */
 package net.redhogs.cronparser.builder;
 
-import java.text.MessageFormat;
-
+import net.redhogs.cronparser.I18nMessages;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.text.MessageFormat;
 
 /**
  * @author grhodes
@@ -48,7 +45,7 @@ public abstract class AbstractDescriptionBuilder {
                     }
                 }
                 if ((i > 0) && (segments.length > 1) && ((i == (segments.length - 1)) || (segments.length == 2))) {
-                    descriptionContent += " and ";
+                    descriptionContent += " " + I18nMessages.get("and") + " ";
                 }
                 descriptionContent += getSingleItemDescription(segments[i]);
             }
@@ -94,7 +91,7 @@ public abstract class AbstractDescriptionBuilder {
     }
 
     /**
-     * @param num
+     * @param expression
      * @param singular
      * @param plural
      * @return

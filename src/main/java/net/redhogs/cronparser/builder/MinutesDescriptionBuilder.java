@@ -1,12 +1,9 @@
-/**
- * 
- */
 package net.redhogs.cronparser.builder;
 
-import java.text.MessageFormat;
-
 import net.redhogs.cronparser.DateAndTimeUtils;
+import net.redhogs.cronparser.I18nMessages;
 
+import java.text.MessageFormat;
 
 /**
  * @author grhodes
@@ -21,17 +18,22 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format("every {0} " + plural(expression, "minute", "minutes"), expression);
+        return MessageFormat.format(I18nMessages.get("every_x") + " " + minPlural(expression), expression);
     }
 
     @Override
     protected String getBetweenDescriptionFormat(String expression) {
-        return "minutes {0} through {1} past the hour";
+        return I18nMessages.get("minutes_through_past_the_hour");
     }
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return expression == "0" ? "" : "at {0} " + plural(expression, "minute", "minutes") + " past the hour";
+        return "0".equals(expression) ? "" : I18nMessages.get("at_x") + " " + minPlural(expression) +
+                " " + I18nMessages.get("past_the_hour");
+    }
+
+    private String minPlural(String expression) {
+        return plural(expression, I18nMessages.get("minute"), I18nMessages.get("minutes"));
     }
 
 }

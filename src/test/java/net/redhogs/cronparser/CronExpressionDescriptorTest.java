@@ -1,11 +1,7 @@
-/**
- * 
- */
 package net.redhogs.cronparser;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 
 /**
  * @author grhodes
@@ -36,7 +32,7 @@ public class CronExpressionDescriptorTest {
     }
 
     @Test
-    public void testEvery5Minutes() throws Exception {
+    public void testEveryXMinutes() throws Exception {
         Assert.assertEquals("Every 5 minutes", CronExpressionDescriptor.getDescription("*/5 * * * *"));
         Assert.assertEquals("Every 5 minutes", CronExpressionDescriptor.getDescription("0 */5 * * * *"));
         Assert.assertEquals("Every 10 minutes", CronExpressionDescriptor.getDescription("0 0/10 * * * ?"));
@@ -174,7 +170,7 @@ public class CronExpressionDescriptorTest {
 
     @Test
     public void testRecurringFirstOfMonth() throws Exception {
-        Assert.assertEquals("At 6:00:00 AM", CronExpressionDescriptor.getDescription("0 0 6 1/1 * ?"));
+        Assert.assertEquals("At 6:00 AM", CronExpressionDescriptor.getDescription("0 0 6 1/1 * ?"));
     }
 
     @Test
