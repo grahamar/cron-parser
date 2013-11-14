@@ -1,0 +1,183 @@
+package net.redhogs.cronparser;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Locale;
+
+public class CronExpressionDescriptorESTest {
+
+    private static final Locale SPANISH = new Locale("es");
+
+    @Test
+    public void testEverySecond() throws Exception {
+        Assert.assertEquals("Cada segundo", CronExpressionDescriptor.getDescription("* * * * * *", SPANISH));
+    }
+
+    @Test
+    public void testEvery45Seconds() throws Exception {
+        Assert.assertEquals("Cada 45 segundos", CronExpressionDescriptor.getDescription("*/45 * * * * *", SPANISH));
+    }
+
+    @Test
+    public void testMinuteSpan() throws Exception {
+        Assert.assertEquals("Cada minuto entre 11:00 AM y 11:10 AM", CronExpressionDescriptor.getDescription("0-10 11 * * *", SPANISH));
+    }
+
+    @Test
+    public void testEveryMinute() throws Exception {
+        Assert.assertEquals("Cada minuto", CronExpressionDescriptor.getDescription("* * * * *", SPANISH));
+        Assert.assertEquals("Cada minuto", CronExpressionDescriptor.getDescription("*/1 * * * *", SPANISH));
+        Assert.assertEquals("Cada minuto", CronExpressionDescriptor.getDescription("0 0/1 * * * ?", SPANISH));
+    }
+
+    @Test
+    public void testEveryXMinutes() throws Exception {
+        Assert.assertEquals("Cada 5 minutos", CronExpressionDescriptor.getDescription("*/5 * * * *", SPANISH));
+        Assert.assertEquals("Cada 5 minutos", CronExpressionDescriptor.getDescription("0 */5 * * * *", SPANISH));
+        Assert.assertEquals("Cada 10 minutos", CronExpressionDescriptor.getDescription("0 0/10 * * * ?", SPANISH));
+    }
+
+    @Test
+    public void testEveryHour() throws Exception {
+        Assert.assertEquals("Cada hora", CronExpressionDescriptor.getDescription("0 0 * * * ?", SPANISH));
+        Assert.assertEquals("Cada hora", CronExpressionDescriptor.getDescription("0 0 0/1 * * ?", SPANISH));
+    }
+
+    @Test
+    public void testDailyAtTime() throws Exception {
+        Assert.assertEquals("En 11:30 AM", CronExpressionDescriptor.getDescription("30 11 * * *", SPANISH));
+    }
+
+    @Test
+    public void testTimeOfDayCertainDaysOfWeek() throws Exception {
+        Assert.assertEquals("En 11:00 PM, lunes hasta viernes", CronExpressionDescriptor.getDescription("0 23 ? * MON-FRI", SPANISH));
+        Assert.assertEquals("En 11:30 AM, lunes hasta viernes", CronExpressionDescriptor.getDescription("30 11 * * 1-5", SPANISH));
+    }
+
+    @Test
+    public void testOneMonthOnly() throws Exception {
+        Assert.assertEquals("Cada minuto, sÃ³lo en marzo", CronExpressionDescriptor.getDescription("* * * 3 *", SPANISH));
+    }
+
+    @Test
+    public void testTwoMonthsOnly() throws Exception {
+        Assert.assertEquals("Cada minuto, sÃ³lo en marzo y junio", CronExpressionDescriptor.getDescription("* * * 3,6 *", SPANISH));
+    }
+
+    @Test
+    public void testTwoTimesEachAfternoon() throws Exception {
+        Assert.assertEquals("En 2:30 PM y 4:30 PM", CronExpressionDescriptor.getDescription("30 14,16 * * *", SPANISH));
+    }
+
+    @Test
+    public void testThreeTimesDaily() throws Exception {
+        Assert.assertEquals("En 6:30 AM, 2:30 PM y 4:30 PM", CronExpressionDescriptor.getDescription("30 6,14,16 * * *", SPANISH));
+    }
+
+    @Test
+    public void testOnceAWeek() throws Exception {
+        Assert.assertEquals("En 9:46 AM, sÃ³lo en lunes", CronExpressionDescriptor.getDescription("46 9 * * 1", SPANISH));
+    }
+
+    @Test
+    public void testDayOfMonth() throws Exception {
+        Assert.assertEquals("En 12:23 PM, en el 15 dÃ­a del mes", CronExpressionDescriptor.getDescription("23 12 15 * *", SPANISH));
+    }
+
+    @Test
+    public void testMonthName() throws Exception {
+        Assert.assertEquals("En 12:23 PM, sÃ³lo en enero", CronExpressionDescriptor.getDescription("23 12 * JAN *", SPANISH));
+    }
+
+    @Test
+    public void testDayOfMonthWithQuestionMark() throws Exception {
+        Assert.assertEquals("En 12:23 PM, sÃ³lo en enero", CronExpressionDescriptor.getDescription("23 12 ? JAN *", SPANISH));
+    }
+
+    @Test
+    public void testMonthNameRange2() throws Exception {
+        Assert.assertEquals("En 12:23 PM, enero hasta febrero", CronExpressionDescriptor.getDescription("23 12 * JAN-FEB *", SPANISH));
+    }
+
+    @Test
+    public void testMonthNameRange3() throws Exception {
+        Assert.assertEquals("En 12:23 PM, enero hasta marzo", CronExpressionDescriptor.getDescription("23 12 * JAN-MAR *", SPANISH));
+    }
+
+    @Test
+    public void testDayOfWeekName() throws Exception {
+        Assert.assertEquals("En 12:23 PM, sÃ³lo en domingo", CronExpressionDescriptor.getDescription("23 12 * * SUN", SPANISH));
+    }
+
+    @Test
+    public void testDayOfWeekRange() throws Exception {
+        Assert.assertEquals("Cada 5 minutos, 3:00 PM, lunes hasta viernes", CronExpressionDescriptor.getDescription("*/5 15 * * MON-FRI", SPANISH));
+    }
+
+    @Test
+    public void testDayOfWeekOnceInMonth() throws Exception {
+        Assert.assertEquals("Cada minuto, en el terzero lunes del mes", CronExpressionDescriptor.getDescription("* * * * MON#3", SPANISH));
+    }
+
+    @Test
+    public void testLastDayOfTheWeekOfTheMonth() throws Exception {
+        Assert.assertEquals("Cada minuto, en el Ãºltimo jueves del mes", CronExpressionDescriptor.getDescription("* * * * 4L", SPANISH));
+    }
+
+    @Test
+    public void testLastDayOfTheMonth() throws Exception {
+        Assert.assertEquals("Cada 5 minutos, en el Ãºltimo dÃ­a del mes, sÃ³lo en enero", CronExpressionDescriptor.getDescription("*/5 * L JAN *", SPANISH));
+    }
+
+    @Test
+    public void testTimeOfDayWithSeconds() throws Exception {
+        Assert.assertEquals("En 2:02:30 PM", CronExpressionDescriptor.getDescription("30 02 14 * * *", SPANISH));
+    }
+
+    @Test
+    public void testSecondInternvals() throws Exception {
+        //TODO Flip 5 & seconds
+        Assert.assertEquals("5 segundos 10 despuÃ©s el minuto", CronExpressionDescriptor.getDescription("5-10 * * * * *", SPANISH));
+    }
+
+    @Test
+    public void testSecondMinutesHoursIntervals() throws Exception {
+        //TODO Flip 5 & seconds
+        Assert.assertEquals("5 segundos 10 despuÃ©s el minuto, desde 30 hasta el 35 minuto despuÃ©s de la hora, entre 10:00 AM y 12:00 PM",
+                CronExpressionDescriptor.getDescription("5-10 30-35 10-12 * * *", SPANISH));
+    }
+
+    @Test
+    public void testEvery5MinutesAt30Seconds() throws Exception {
+        Assert.assertEquals("30 segundos despuÃ©s el minuto, cada 5 minutos", CronExpressionDescriptor.getDescription("30 */5 * * * *", SPANISH));
+    }
+
+    @Test
+    public void testMinutesPastTheHourRange() throws Exception {
+        Assert.assertEquals("30 minutos pasada la hora, entre 10:00 AM y 1:00 PM, sÃ³lo en miércoles y viernes",
+                CronExpressionDescriptor.getDescription("0 30 10-13 ? * WED,FRI", SPANISH));
+    }
+
+    @Test
+    public void testSecondsPastTheMinuteInterval() throws Exception {
+        Assert.assertEquals("10 segundos despuÃ©s el minuto, cada 5 minutos", CronExpressionDescriptor.getDescription("10 0/5 * * * ?", SPANISH));
+    }
+
+    @Test
+    public void testBetweenWithInterval() throws Exception {
+        Assert.assertEquals("Cada 3 minutos, desde 02 hasta el 59 minuto despuÃ©s de la hora, 1:00 AM, 9:00 AM, y 10:00 PM, entre el 11 y el 26 del mes, enero hasta junio",
+                CronExpressionDescriptor.getDescription("2-59/3 1,9,22 11-26 1-6 ?", SPANISH));
+    }
+
+    @Test
+    public void testRecurringFirstOfMonth() throws Exception {
+        Assert.assertEquals("En 6:00 AM", CronExpressionDescriptor.getDescription("0 0 6 1/1 * ?", SPANISH));
+    }
+
+    @Test
+    public void testMinutesPastTheHour() throws Exception {
+        Assert.assertEquals("05 minutos pasada la hora", CronExpressionDescriptor.getDescription("0 5 0/1 * * ?", SPANISH));
+    }
+
+}
