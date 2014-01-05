@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/RedHogs/cron-parser.png?label=ready)](https://waffle.io/RedHogs/cron-parser)  
 cron-parser
 ===========
 
