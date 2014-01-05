@@ -18,7 +18,7 @@ License: MIT
 
 **Download**
 
-If you want to get up and running quickly and just want the library, [visit the Downloads page](https://github.com/grahamar/cron-parser/downloads) and download the latest JAR library.
+cron-parser is available in the [maven central repository](http://search.maven.org/#browse|987144470), please select the latest version from there.
 
 **Usage Examples (Unit Tests)**  
   
