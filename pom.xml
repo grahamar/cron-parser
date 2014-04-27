@@ -222,6 +222,11 @@
                 <artifactId>clirr-maven-plugin</artifactId>
                 <version>2.6.1</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
 		</plugins>
 		<extensions>
 			<!-- Needed to deploy using Webdav -->

@@ -12,7 +12,7 @@ import java.text.MessageFormat;
  */
 public abstract class AbstractDescriptionBuilder {
 
-    protected static final char[] specialCharsMinusStar = new char[] { '/', '-', ',' };
+    protected final char[] SpecialCharsMinusStar = new char[] { '/', '-', ',' };
 
     public String getSegmentDescription(String expression, String allDescription) {
         String description = "";
@@ -20,7 +20,7 @@ public abstract class AbstractDescriptionBuilder {
             description = "";
         } else if ("*".equals(expression)) {
             description = allDescription;
-        } else if (!StringUtils.containsAny(expression, specialCharsMinusStar)) {
+        } else if (!StringUtils.containsAny(expression, SpecialCharsMinusStar)) {
             description = MessageFormat.format(getDescriptionFormat(expression), getSingleItemDescription(expression));
         } else if (expression.contains("/")) {
             String[] segments = expression.split("/");
@@ -36,20 +36,22 @@ public abstract class AbstractDescriptionBuilder {
             description = MessageFormat.format(getBetweenDescriptionFormat(expression), getSingleItemDescription(segments[0]), getSingleItemDescription(segments[1]));
         } else if (expression.contains(",")) {
             String[] segments = expression.split(",");
-            String descriptionContent = "";
+            StringBuilder descriptionContent = new StringBuilder();
             for (int i = 0; i < segments.length; i++) {
                 if ((i > 0) && (segments.length > 2)) {
-                    descriptionContent += ",";
+                    descriptionContent.append(",");
                     if (i < (segments.length - 1)) {
-                        descriptionContent += " ";
+                        descriptionContent.append(" ");
                     }
                 }
                 if ((i > 0) && (segments.length > 1) && ((i == (segments.length - 1)) || (segments.length == 2))) {
-                    descriptionContent += " " + I18nMessages.get("and") + " ";
+                    descriptionContent.append(" ");
+                    descriptionContent.append(I18nMessages.get("and"));
+                    descriptionContent.append(" ");
                 }
-                descriptionContent += getSingleItemDescription(segments[i]);
+                descriptionContent.append(getSingleItemDescription(segments[i]));
             }
-            description = MessageFormat.format(getDescriptionFormat(expression), descriptionContent);
+            description = MessageFormat.format(getDescriptionFormat(expression), descriptionContent.toString());
         }
         return description;
     }
