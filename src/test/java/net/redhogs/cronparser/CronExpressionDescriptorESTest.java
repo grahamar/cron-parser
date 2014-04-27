@@ -81,6 +81,15 @@ public class CronExpressionDescriptorESTest {
     }
 
     @Test
+    public void testOnceAWeekNonZeroBased() throws Exception {
+        Options options = new Options();
+        options.setZeroBasedDayOfWeek(false);
+        Assert.assertEquals("En 9:46 AM, sÃ³lo en domingo", CronExpressionDescriptor.getDescription("46 9 * * 1", options, SPANISH));
+        Assert.assertEquals("En 9:46 AM, sÃ³lo en lunes", CronExpressionDescriptor.getDescription("46 9 * * 2", options, SPANISH));
+        Assert.assertEquals("En 9:46 AM, sÃ³lo en sábado", CronExpressionDescriptor.getDescription("46 9 * * 7", options, SPANISH));
+    }
+
+    @Test
     public void testDayOfMonth() throws Exception {
         Assert.assertEquals("En 12:23 PM, en el 15 dÃ­a del mes", CronExpressionDescriptor.getDescription("23 12 15 * *", SPANISH));
     }

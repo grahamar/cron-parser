@@ -2,6 +2,7 @@ package net.redhogs.cronparser.builder;
 
 import net.redhogs.cronparser.DateAndTimeUtils;
 import net.redhogs.cronparser.I18nMessages;
+import net.redhogs.cronparser.Options;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -14,6 +15,20 @@ import java.text.MessageFormat;
  */
 public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
 
+    private final Options options;
+
+    /**
+     * @deprecated Use DayOfWeekDescriptionBuilder(Options) instead.
+     */
+    @Deprecated
+    public DayOfWeekDescriptionBuilder() {
+        this.options = null;
+    }
+
+    public DayOfWeekDescriptionBuilder(Options options) {
+        this.options = options;
+    }
+
     @Override
     protected String getSingleItemDescription(String expression) {
         String exp = expression;
@@ -23,7 +38,13 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
             exp = exp.replace("L", "");
         }
         if (StringUtils.isNumeric(exp)) {
-            return DateAndTimeUtils.getDayOfWeekName(Integer.parseInt(exp));
+            int dayOfWeekNum = Integer.parseInt(exp);
+            if(options != null && !options.isZeroBasedDayOfWeek() && dayOfWeekNum <= 1) {
+                dayOfWeekNum = 7;
+            } else if(options != null && !options.isZeroBasedDayOfWeek()) {
+                dayOfWeekNum -= 1;
+            }
+            return DateAndTimeUtils.getDayOfWeekName(dayOfWeekNum);
         } else {
             return DateTimeFormat.forPattern("EEE").parseDateTime(WordUtils.capitalizeFully(exp)).dayOfWeek().getAsText(I18nMessages.getCurrentLocale());
         }

@@ -1,9 +1,9 @@
 package net.redhogs.cronparser;
 
-import java.util.Locale;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Locale;
 
 public class CronExpressionDescriptorNLTest {
 
@@ -78,6 +78,15 @@ public class CronExpressionDescriptorNLTest {
     @Test
     public void testOnceAWeek() throws Exception {
         Assert.assertEquals("Om 9:46 AM, alleen op maandag", CronExpressionDescriptor.getDescription("46 9 * * 1", DUTCH));
+    }
+
+    @Test
+    public void testOnceAWeekNonZeroBased() throws Exception {
+        Options options = new Options();
+        options.setZeroBasedDayOfWeek(false);
+        Assert.assertEquals("Om 9:46 AM, alleen op zondag", CronExpressionDescriptor.getDescription("46 9 * * 1", options, DUTCH));
+        Assert.assertEquals("Om 9:46 AM, alleen op maandag", CronExpressionDescriptor.getDescription("46 9 * * 2", options, DUTCH));
+        Assert.assertEquals("Om 9:46 AM, alleen op zaterdag", CronExpressionDescriptor.getDescription("46 9 * * 7", options, DUTCH));
     }
 
     @Test

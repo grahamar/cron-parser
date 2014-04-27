@@ -27,8 +27,16 @@ public class CronExpressionDescriptor {
         return getDescription(DescriptionTypeEnum.FULL, expression, new Options(), I18nMessages.DEFAULT_LOCALE);
     }
 
+    public static String getDescription(String expression, Options options) throws ParseException {
+        return getDescription(DescriptionTypeEnum.FULL, expression, options, I18nMessages.DEFAULT_LOCALE);
+    }
+
     public static String getDescription(String expression, Locale locale) throws ParseException {
         return getDescription(DescriptionTypeEnum.FULL, expression, new Options(), locale);
+    }
+
+    public static String getDescription(String expression, Options options, Locale locale) throws ParseException {
+        return getDescription(DescriptionTypeEnum.FULL, expression, options, locale);
     }
 
     public static String getDescription(DescriptionTypeEnum type, String expression) throws ParseException {
@@ -72,7 +80,7 @@ public class CronExpressionDescriptor {
                     description = getMonthDescription(expressionParts);
                     break;
                 case DAYOFWEEK:
-                    description = getDayOfWeekDescription(expressionParts);
+                    description = getDayOfWeekDescription(expressionParts, options);
                     break;
                 default:
                     description = getSecondsDescription(expressionParts);
@@ -94,8 +102,8 @@ public class CronExpressionDescriptor {
      * @param expressionParts
      * @return
      */
-    private static String getDayOfWeekDescription(String[] expressionParts) {
-        return new DayOfWeekDescriptionBuilder().getSegmentDescription(expressionParts[5], ", "+I18nMessages.get("every_day"));
+    private static String getDayOfWeekDescription(String[] expressionParts, Options options) {
+        return new DayOfWeekDescriptionBuilder(options).getSegmentDescription(expressionParts[5], ", "+I18nMessages.get("every_day"));
     }
 
     /**
@@ -213,7 +221,7 @@ public class CronExpressionDescriptor {
         String timeSegment = getTimeOfDayDescription(expressionParts);
         String dayOfMonthDesc = getDayOfMonthDescription(expressionParts);
         String monthDesc = getMonthDescription(expressionParts);
-        String dayOfWeekDesc = getDayOfWeekDescription(expressionParts);
+        String dayOfWeekDesc = getDayOfWeekDescription(expressionParts, options);
         description = MessageFormat.format("{0}{1}{2}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
         description = transformVerbosity(description, options);
         description = transformCase(description, options);

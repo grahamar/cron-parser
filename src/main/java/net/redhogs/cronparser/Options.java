@@ -9,11 +9,14 @@ public class Options {
     private boolean throwExceptionOnParseError;
     private CasingTypeEnum casingType;
     private boolean verbose;
+    private boolean zeroBasedDayOfWeek;
 
     public Options() {
         this.throwExceptionOnParseError = true;
         this.casingType = CasingTypeEnum.Sentence;
         this.verbose = false;
+        // By default CRON expressions are zero-based
+        this.zeroBasedDayOfWeek = true;
     }
 
     /**
@@ -56,6 +59,36 @@ public class Options {
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    /**
+     * If we are zero-based
+     * <ul>
+     * <li>day of week (0 - 7) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)</li>
+     * </ul>
+     * If we are not zero based
+     * <ul>
+     * <li>day of week (1 - 7) (1 to 6 are Sunday to Saturday, or use names; 7 is Saturday)</li>
+     * </ul>
+     * @param zeroBasedDayOfWeek if we are zero-based or not
+     */
+    public void setZeroBasedDayOfWeek(boolean zeroBasedDayOfWeek) {
+        this.zeroBasedDayOfWeek = zeroBasedDayOfWeek;
+    }
+
+    /**
+     * If we are zero-based
+     * <ul>
+     * <li>day of week (0 - 7) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)</li>
+     * </ul>
+     * If we are not zero based
+     * <ul>
+     * <li>day of week (1 - 7) (1 to 6 are Sunday to Saturday, or use names; 7 is Saturday)</li>
+     * </ul>
+     * @return if we are zero-based or not
+     */
+    public boolean isZeroBasedDayOfWeek() {
+        return zeroBasedDayOfWeek;
     }
 
 }
