@@ -1,6 +1,7 @@
-package net.redhogs.cronparser;
+package net.redhogs.cronparser.builder;
 
-import net.redhogs.cronparser.builder.*;
+import net.redhogs.cronparser.*;
+import net.redhogs.cronparser.parser.ParserFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,44 +21,28 @@ public class CronExpressionDescriptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(CronExpressionDescriptor.class);
     private static final char[] specialCharacters = new char[] { '/', '-', ',', '*' };
+    private ParserFactory parserFactory;
 
-    private CronExpressionDescriptor() {
+    private CronType cronType;
+    private DescriptionTypeEnum type;
+    private Options options;
+    private Locale locale;
+
+    protected CronExpressionDescriptor(CronType cronType, DescriptionTypeEnum type,
+                                       Options options, Locale locale) {
+        this.cronType = cronType;
+        this.type = type;
+        this.options = options;
+        this.locale = locale;
+        parserFactory = ParserFactory.getInstance();
     }
 
-    public static String getDescription(String expression) throws ParseException {
-        return getDescription(DescriptionTypeEnum.FULL, expression, new Options(), I18nMessages.DEFAULT_LOCALE);
-    }
-
-    public static String getDescription(String expression, Options options) throws ParseException {
-        return getDescription(DescriptionTypeEnum.FULL, expression, options, I18nMessages.DEFAULT_LOCALE);
-    }
-
-    public static String getDescription(String expression, Locale locale) throws ParseException {
-        return getDescription(DescriptionTypeEnum.FULL, expression, new Options(), locale);
-    }
-
-    public static String getDescription(String expression, Options options, Locale locale) throws ParseException {
-        return getDescription(DescriptionTypeEnum.FULL, expression, options, locale);
-    }
-
-    public static String getDescription(DescriptionTypeEnum type, String expression) throws ParseException {
-        return getDescription(type, expression, new Options(), I18nMessages.DEFAULT_LOCALE);
-    }
-
-    public static String getDescription(DescriptionTypeEnum type, String expression, Locale locale) throws ParseException {
-        return getDescription(type, expression, new Options(), locale);
-    }
-
-    public static String getDescription(DescriptionTypeEnum type, String expression, Options options) throws ParseException {
-        return getDescription(type, expression, options, I18nMessages.DEFAULT_LOCALE);
-    }
-
-    public static String getDescription(DescriptionTypeEnum type, String expression, Options options, Locale locale) throws ParseException {
+    public String getDescription(String expression) throws ParseException {
         I18nMessages.setCurrentLocale(locale);
-        String[] expressionParts;
+        Map<CronParameter, String> expressionParts;
         String description = "";
         try {
-            expressionParts = ExpressionParser.parse(expression);
+            expressionParts = parserFactory.retrieveInstanceForType(cronType).parse(expression);
             switch (type) {
                 case FULL:
                     description = getFullDescription(expressionParts, options);
@@ -102,25 +88,25 @@ public class CronExpressionDescriptor {
      * @param expressionParts
      * @return
      */
-    private static String getDayOfWeekDescription(String[] expressionParts, Options options) {
-        return new DayOfWeekDescriptionBuilder(options).getSegmentDescription(expressionParts[5], ", "+I18nMessages.get("every_day"));
+    private String getDayOfWeekDescription(Map<CronParameter, String> expressionParts, Options options) {
+        return new DayOfWeekDescriptionBuilder(options).getSegmentDescription(expressionParts.get(CronParameter.DAY_OF_WEEK), ", "+I18nMessages.get("every_day"));
     }
 
     /**
      * @param expressionParts
      * @return
      */
-    private static String getMonthDescription(String[] expressionParts) {
-        return new MonthDescriptionBuilder().getSegmentDescription(expressionParts[4], "");
+    private String getMonthDescription(Map<CronParameter, String> expressionParts) {
+        return new MonthDescriptionBuilder().getSegmentDescription(expressionParts.get(CronParameter.MONTH), "");
     }
 
     /**
      * @param expressionParts
      * @return
      */
-    private static String getDayOfMonthDescription(String[] expressionParts) {
+    private String getDayOfMonthDescription(Map<CronParameter, String> expressionParts) {
         String description = null;
-        String exp = expressionParts[3].replace("?", "*");
+        String exp = expressionParts.get(CronParameter.DAY_OF_MONTH).replace("?", "*");
         if ("L".equals(exp)) {
             description = ", "+I18nMessages.get("on_the_last_day_of_the_month");
         } else if ("WL".equals(exp) || "LW".equals(exp)) {
@@ -143,34 +129,34 @@ public class CronExpressionDescriptor {
      * @param expressionParts
      * @return
      */
-    private static String getSecondsDescription(String[] expressionParts) {
-        return new SecondsDescriptionBuilder().getSegmentDescription(expressionParts[0], I18nMessages.get("every_second"));
+    private String getSecondsDescription(Map<CronParameter, String> expressionParts) {
+        return new SecondsDescriptionBuilder().getSegmentDescription(expressionParts.get(CronParameter.SECOND), I18nMessages.get("every_second"));
     }
 
     /**
      * @param expressionParts
      * @return
      */
-    private static String getMinutesDescription(String[] expressionParts) {
-        return new MinutesDescriptionBuilder().getSegmentDescription(expressionParts[1], I18nMessages.get("every_minute"));
+    private String getMinutesDescription(Map<CronParameter, String> expressionParts) {
+        return new MinutesDescriptionBuilder().getSegmentDescription(expressionParts.get(CronParameter.MINUTE), I18nMessages.get("every_minute"));
     }
 
     /**
      * @param expressionParts
      * @return
      */
-    private static String getHoursDescription(String[] expressionParts) {
-        return new HoursDescriptionBuilder().getSegmentDescription(expressionParts[2], I18nMessages.get("every_hour"));
+    private String getHoursDescription(Map<CronParameter, String> expressionParts) {
+        return new HoursDescriptionBuilder().getSegmentDescription(expressionParts.get(CronParameter.HOUR), I18nMessages.get("every_hour"));
     }
 
     /**
      * @param expressionParts
      * @return
      */
-    private static String getTimeOfDayDescription(String[] expressionParts) {
-        String secondsExpression = expressionParts[0];
-        String minutesExpression = expressionParts[1];
-        String hoursExpression = expressionParts[2];
+    private String getTimeOfDayDescription(Map<CronParameter, String> expressionParts) {
+        String secondsExpression = expressionParts.get(CronParameter.SECOND);
+        String minutesExpression = expressionParts.get(CronParameter.MINUTE);
+        String hoursExpression = expressionParts.get(CronParameter.HOUR);
         StringBuilder description = new StringBuilder();
         // Handle special cases first
         if (!StringUtils.containsAny(minutesExpression, specialCharacters) && !StringUtils.containsAny(hoursExpression, specialCharacters) && !StringUtils.containsAny(secondsExpression, specialCharacters)) {
@@ -216,13 +202,14 @@ public class CronExpressionDescriptor {
      * @param expressionParts
      * @return
      */
-    private static String getFullDescription(String[] expressionParts, Options options) {
+    private String getFullDescription(Map<CronParameter, String> expressionParts, Options options) {
         String description = "";
         String timeSegment = getTimeOfDayDescription(expressionParts);
         String dayOfMonthDesc = getDayOfMonthDescription(expressionParts);
         String monthDesc = getMonthDescription(expressionParts);
         String dayOfWeekDesc = getDayOfWeekDescription(expressionParts, options);
-        description = MessageFormat.format("{0}{1}{2}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
+        description = MessageFormat.format("{0}{1}{2}", timeSegment,
+                ("*".equals(expressionParts.get(CronParameter.DAY_OF_MONTH)) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
         description = transformVerbosity(description, options);
         description = transformCase(description, options);
         return description;
@@ -232,7 +219,7 @@ public class CronExpressionDescriptor {
      * @param description
      * @return
      */
-    private static String transformCase(String description, Options options) {
+    private String transformCase(String description, Options options) {
         String descTemp = description;
         switch (options.getCasingType()) {
             case Sentence:
@@ -253,7 +240,7 @@ public class CronExpressionDescriptor {
      * @param options
      * @return
      */
-    private static String transformVerbosity(String description, Options options) {
+    private String transformVerbosity(String description, Options options) {
         String descTemp = description;
         if (!options.isVerbose()) {
             descTemp = descTemp.replace(I18nMessages.get("every_1_minute"), I18nMessages.get("every_minute"));

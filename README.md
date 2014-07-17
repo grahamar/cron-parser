@@ -21,6 +21,29 @@ License: MIT
 
 cron-parser is available in the [maven central repository](http://search.maven.org/#browse|987144470), please select the latest version from there.
 
-**Usage Examples (Unit Tests)**
+**Usage Examples**
 
-See src/test/java/com/gr/cronparser/CronExpressionDescriptorTest.java
+For complete examples, please view our tests: src/test/java/com/gr/cronparser/CronExpressionDescriptorTest.java
+
+***Quick example***
+
+    CronExpressionDescriptor descriptor =
+                DescriptorParamsBuilder.createDescriptor()
+                        .withLocale(ENGLISH)
+                        .forCronType(CronType.QUARTZ)
+                        .build();
+
+                        String description = descriptor.getDescription("*/45 * * * * *");
+                        //description will be: "Every 45 seconds"
+
+                        description = descriptor.getDescription("5-10 * * * * *");
+                        //description will be: "Seconds 5 through 10 past the minute"
+
+
+                descriptor = DescriptorParamsBuilder.createDescriptor()
+                        .withLocale(ENGLISH)
+                        .forCronType(CronType.UNIX)
+                        .build();
+
+                        description = descriptor.getDescription("0 23 ? * MON-FRI");
+                        //description will be: "At 11:00:00 PM, Monday through Friday"
