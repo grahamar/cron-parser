@@ -31,7 +31,7 @@ For complete examples, please view our tests: src/test/java/com/gr/cronparser/Cr
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(ENGLISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
 
                         String description = descriptor.getDescription("*/45 * * * * *");
                         //description will be: "Every 45 seconds"
@@ -43,7 +43,7 @@ For complete examples, please view our tests: src/test/java/com/gr/cronparser/Cr
                 descriptor = DescriptorParamsBuilder.createDescriptor()
                         .withLocale(ENGLISH)
                         .forCronType(CronType.UNIX)
-                        .build();
+                        .instance();
 
                         description = descriptor.getDescription("0 23 ? * MON-FRI");
                         //description will be: "At 11:00:00 PM, Monday through Friday"

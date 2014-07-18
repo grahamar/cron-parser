@@ -11,9 +11,6 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jose.rozanec on 7/16/14.
- */
 public abstract class CronExpressionParser {
 
     public abstract CronType getCronType();

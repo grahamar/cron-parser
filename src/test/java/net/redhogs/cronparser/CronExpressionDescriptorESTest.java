@@ -19,7 +19,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                     .withLocale(SPANISH)
                     .forCronType(CronType.UNIX)
-                    .build();
+                    .instance();
     }
 
     @Test
@@ -28,7 +28,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build()
+                        .instance()
                         .getDescription("* * * * * *")
         );
     }
@@ -39,7 +39,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build()
+                        .instance()
                         .getDescription("*/45 * * * * *")
         );
     }
@@ -115,7 +115,7 @@ public class CronExpressionDescriptorESTest {
                         .withLocale(SPANISH)
                         .withOptions(options)
                         .forCronType(CronType.UNIX)
-                        .build();
+                        .instance();
         Assert.assertEquals("En 9:46:00 AM, solo en domingo", descriptor.getDescription("46 9 * * 1"));
         Assert.assertEquals("En 9:46:00 AM, solo en lunes", descriptor.getDescription("46 9 * * 2"));
         Assert.assertEquals("En 9:46:00 AM, solo en sábado", descriptor.getDescription("46 9 * * 7"));
@@ -177,7 +177,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("En 2:02:30 PM", descriptor.getDescription("30 02 14 * * *"));
     }
 
@@ -188,7 +188,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("5 segundos 10 despues el minuto", descriptor.getDescription("5-10 * * * * *"));
     }
 
@@ -199,7 +199,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("5 segundos 10 despues el minuto, desde 30 hasta el 35 minuto despues de la hora, entre 10:00 AM y 12:00 PM",
                 descriptor.getDescription("5-10 30-35 10-12 * * *"));
     }
@@ -210,7 +210,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("30 segundos despues el minuto, cada 5 minutos", descriptor.getDescription("30 */5 * * * *"));
     }
 
@@ -220,7 +220,7 @@ public class CronExpressionDescriptorESTest {
                     DescriptorParamsBuilder.createDescriptor()
                             .withLocale(SPANISH)
                             .forCronType(CronType.QUARTZ)
-                            .build();
+                            .instance();
         Assert.assertEquals("30 minutos pasada la hora, entre 10:00 AM y 1:00 PM, solo en miércoles y viernes",
                 descriptor.getDescription("0 30 10-13 ? * WED,FRI"));
     }
@@ -231,7 +231,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("10 segundos despues el minuto, cada 5 minutos", descriptor.getDescription("10 0/5 * * * ?"));
     }
 
@@ -252,7 +252,7 @@ public class CronExpressionDescriptorESTest {
                 DescriptorParamsBuilder.createDescriptor()
                         .withLocale(SPANISH)
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("05 minutos pasada la hora", descriptor.getDescription("0 5 0/1 * * ?"));
     }
 

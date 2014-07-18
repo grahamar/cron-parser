@@ -19,7 +19,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.UNIX)
-                        .build();
+                        .instance();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("Every second", descriptor.getDescription("* * * * * *"));
     }
 
@@ -36,7 +36,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("Every 45 seconds", descriptor.getDescription("*/45 * * * * *"));
     }
 
@@ -164,7 +164,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("At 2:02:30 PM", descriptor.getDescription("30 02 14 * * *"));
     }
 
@@ -173,7 +173,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("Seconds 5 through 10 past the minute", descriptor.getDescription("5-10 * * * * *"));
     }
 
@@ -182,7 +182,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("Seconds 5 through 10 past the minute, minutes 30 through 35 past the hour, between 10:00 AM and 12:00 PM",
                 descriptor.getDescription("5-10 30-35 10-12 * * *"));
     }
@@ -192,7 +192,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("At 30 seconds past the minute, every 5 minutes", descriptor.getDescription("30 */5 * * * *"));
     }
 
@@ -207,7 +207,7 @@ public class CronExpressionDescriptorTest {
         descriptor =
                 DescriptorParamsBuilder.createDescriptor()
                         .forCronType(CronType.QUARTZ)
-                        .build();
+                        .instance();
         Assert.assertEquals("At 10 seconds past the minute, every 5 minutes", descriptor.getDescription("10 0/5 * * * ?"));
     }
 

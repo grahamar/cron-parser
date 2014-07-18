@@ -2,9 +2,6 @@ package net.redhogs.cronparser.parser;
 
 import net.redhogs.cronparser.CronType;
 
-/**
- * Created by jose.rozanec on 7/16/14.
- */
 public class ParserFactory {
 
     private static final QuartzCronExpressionParser quartzCronExpressionParser = new QuartzCronExpressionParser();
@@ -23,9 +20,9 @@ public class ParserFactory {
     public CronExpressionParser retrieveInstanceForType(CronType type){
         switch (type){
             case QUARTZ:
-                return quartzCronExpressionParser;
+                return getQuartzCronExpressionParser();
             default:
-                return unixCronExpressionParser;
+                return getUnixCronExpressionParser();
         }
     }
 

@@ -4,14 +4,11 @@ import net.redhogs.cronparser.*;
 
 import java.util.Locale;
 
-/**
- * Created by jose.rozanec on 7/16/14.
- */
 public class DescriptorParamsBuilder {
-    private CronType cronType;
-    private DescriptionTypeEnum descriptionType;
-    private Options options;
-    private Locale locale;
+    protected CronType cronType;
+    protected DescriptionTypeEnum descriptionType;
+    protected Options options;
+    protected Locale locale;
 
     private DescriptorParamsBuilder(){
         cronType = CronType.UNIX;
@@ -40,7 +37,7 @@ public class DescriptorParamsBuilder {
         return this;
     }
 
-    public CronExpressionDescriptor build(){
+    public CronExpressionDescriptor instance(){
         return new CronExpressionDescriptor(cronType, descriptionType, options, locale);
     }
 

@@ -6,9 +6,6 @@ import net.redhogs.cronparser.CronType;
 import java.text.ParseException;
 import java.util.Map;
 
-/**
- * Created by jose.rozanec on 7/16/14.
- */
 public class QuartzCronExpressionParser extends CronExpressionParser {
 
     QuartzCronExpressionParser() {}
