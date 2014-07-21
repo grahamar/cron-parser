@@ -16,7 +16,7 @@ public class QuartzCronExpressionParser extends CronExpressionParser {
         if (expressionParts.length < 6) {
             throw new ParseException(expression, 0);
         } else if (expressionParts.length > 7) {
-            throw new ParseException(expression, 6);
+            throw new ParseException(expression, expressionParts.length);
         } else if (expressionParts.length == 6) {
             //second, minute hour day_of_month month day_of_week
             map.put(CronParameter.SECOND, expressionParts[0]);

@@ -2,9 +2,6 @@ package net.redhogs.cronparser.parser;
 
 import net.redhogs.cronparser.CronParameter;
 import net.redhogs.cronparser.CronType;
-import net.redhogs.cronparser.parser.CronExpressionParser;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.util.Map;
@@ -22,8 +19,8 @@ public class UnixCronExpressionParser extends CronExpressionParser {
         String[] expressionParts = expression.split(" ");
         if (expressionParts.length < 5) {
             throw new ParseException(expression, 0);
-        } else if (expressionParts.length > 6) {
-            throw new ParseException(expression, 6);
+        } else if (expressionParts.length > 5) {
+            throw new ParseException(expression, expressionParts.length);
         } else if (expressionParts.length == 5) {
             //minute hour day_of_month month day_of_week
             map.put(CronParameter.MINUTE, expressionParts[0]);

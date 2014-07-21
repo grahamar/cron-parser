@@ -5,6 +5,7 @@ import net.redhogs.cronparser.CronType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +31,16 @@ public class QuartzCronExpressionParserTest {
         for(CronParameter param : CronParameter.values()){
                 params.get(param).equals("2");
         }
+    }
+
+    @Test(expected = ParseException.class)
+    public void testParseBadLargeExpression() throws Exception {
+        expressionParser.parse("2 2 2 2 2 2 2 2");
+    }
+
+    @Test(expected = ParseException.class)
+    public void testParseBadShortExpression() throws Exception {
+        expressionParser.parse("2 2 2 2");
     }
 
     @Test
