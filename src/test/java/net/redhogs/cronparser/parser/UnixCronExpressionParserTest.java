@@ -46,6 +46,11 @@ public class UnixCronExpressionParserTest {
         expressionParser.parse("2 2 2 2");
     }
 
+    @Test//TODO this shoiuld fail
+    public void testParseBadMonthExpression() throws Exception {
+        expressionParser.parse("2 2 2 SOME_MONTH 2");
+    }
+
     @Test
     public void testGetCronType() throws Exception {
         assertEquals(CronType.UNIX, expressionParser.getCronType());
