@@ -8,6 +8,7 @@ Translated to Java from https://github.com/bradyholt/cron-expression-descriptor.
 
 Original Author & Credit: Brady Holt (http://www.geekytidbits.com)
 License: MIT
+From v3.0.0 onwards, the library follows the [Semantic Versioning convention](http://semver.org/)
 
 **Features**
 
