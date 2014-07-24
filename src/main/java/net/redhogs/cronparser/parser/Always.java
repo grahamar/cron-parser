@@ -1,5 +1,8 @@
 package net.redhogs.cronparser.parser;
 
+/**
+ * Represents a star (*) value on cron expression field
+ */
 public class Always extends CronFieldExpression {
     private Every every;
 

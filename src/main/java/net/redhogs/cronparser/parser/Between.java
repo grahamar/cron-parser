@@ -1,5 +1,8 @@
 package net.redhogs.cronparser.parser;
 
+/**
+ * Represents a range in a cron expression.
+ */
 public class Between extends CronFieldExpression {
     private int from;
     private int to;

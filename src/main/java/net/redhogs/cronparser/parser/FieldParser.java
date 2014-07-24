@@ -2,6 +2,9 @@ package net.redhogs.cronparser.parser;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Parses a field from a cron expression.
+ */
 public class FieldParser {
     private final char[] specialCharsMinusStar = new char[] { '/', '-', ',' };
 
