@@ -1,4 +1,4 @@
-package net.redhogs.cronparser.parser;
+package net.redhogs.cronparser.parser.field;
 
 public abstract class CronFieldExpression {
 

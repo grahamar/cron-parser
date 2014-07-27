@@ -1,4 +1,4 @@
-package net.redhogs.cronparser.parser;
+package net.redhogs.cronparser.parser.field;
 
 import org.apache.commons.lang3.StringUtils;
 

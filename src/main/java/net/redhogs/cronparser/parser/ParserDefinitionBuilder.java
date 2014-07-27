@@ -1,6 +1,7 @@
 package net.redhogs.cronparser.parser;
 
 import net.redhogs.cronparser.CronParameter;
+import net.redhogs.cronparser.parser.field.CronField;
 
 import java.util.HashMap;
 import java.util.HashSet;

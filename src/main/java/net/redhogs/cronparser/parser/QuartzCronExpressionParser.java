@@ -5,7 +5,7 @@ import net.redhogs.cronparser.CronType;
 
 import java.text.ParseException;
 import java.util.Map;
-
+@Deprecated
 public class QuartzCronExpressionParser extends CronExpressionParser {
 
     QuartzCronExpressionParser() {}

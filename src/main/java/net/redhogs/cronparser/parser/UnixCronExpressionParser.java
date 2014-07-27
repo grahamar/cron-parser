@@ -10,6 +10,7 @@ import java.util.Map;
  * @author grhodes
  * @since 10 Dec 2012 10:58:21
  */
+@Deprecated
 public class UnixCronExpressionParser extends CronExpressionParser {
 
     UnixCronExpressionParser() {}

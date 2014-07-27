@@ -1,4 +1,4 @@
-package net.redhogs.cronparser.parser;
+package net.redhogs.cronparser.parser.field;
 
 public class On extends CronFieldExpression {
     private int number;

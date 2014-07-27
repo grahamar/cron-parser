@@ -1,4 +1,4 @@
-package net.redhogs.cronparser.parser;
+package net.redhogs.cronparser.parser.field;
 
 import java.util.ArrayList;
 import java.util.List;

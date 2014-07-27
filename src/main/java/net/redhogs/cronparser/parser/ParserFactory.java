@@ -2,6 +2,7 @@ package net.redhogs.cronparser.parser;
 
 import net.redhogs.cronparser.CronType;
 
+@Deprecated
 public class ParserFactory {
 
     private static final QuartzCronExpressionParser quartzCronExpressionParser = new QuartzCronExpressionParser();

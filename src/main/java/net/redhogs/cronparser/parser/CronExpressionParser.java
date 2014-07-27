@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public abstract class CronExpressionParser {
 
     public abstract CronType getCronType();

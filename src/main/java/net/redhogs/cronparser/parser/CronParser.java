@@ -1,5 +1,7 @@
 package net.redhogs.cronparser.parser;
 
+import net.redhogs.cronparser.parser.field.CronField;
+import net.redhogs.cronparser.parser.field.CronFieldParseResult;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
