@@ -5,15 +5,21 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Parses a field from a cron expression.
  */
-public class FieldParser {
+class FieldParser {
     private final char[] specialCharsMinusStar = new char[] { '/', '-', ',' };
 
-    public CronFieldExpression parse(String expression) {
+    private FieldConstraints constraints;
+
+    FieldParser(){
+        constraints = FieldConstraints.nullConstraints();
+    }
+
+    CronFieldExpression parse(String expression) {
         if (!StringUtils.containsAny(expression, specialCharsMinusStar)) {
             if ("*".equals(expression)) {
-                return new Always();
+                return new Always(constraints);
             } else {
-                return new On(expression);
+                return new On(constraints, expression);
             }
         } else {
             String[] array = expression.split(",");
@@ -28,14 +34,19 @@ public class FieldParser {
                 if (array.length > 1) {
                     if (array[1].contains("/")) {
                         String[] every = array[1].split("/");
-                        return new Between(array[0], every[0], every[1]);
+                        return new Between(constraints, array[0], every[0], every[1]);
                     } else {
-                        return new Between(array[0], array[1]);
+                        return new Between(constraints, array[0], array[1]);
                     }
                 } else {
-                    return new Every(expression.split("/")[1]);
+                    return new Every(constraints, expression.split("/")[1]);
                 }
             }
         }
+    }
+
+    FieldParser withConstraints(FieldConstraints constraints){
+        this.constraints = constraints;
+        return this;
     }
 }

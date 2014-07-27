@@ -11,6 +11,7 @@ public class And extends CronFieldExpression {
     private List<CronFieldExpression> expressions;
 
     public And() {
+        super(FieldConstraints.nullConstraints());
         expressions = new ArrayList<CronFieldExpression>();
     }
 

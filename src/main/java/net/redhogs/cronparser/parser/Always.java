@@ -6,16 +6,16 @@ package net.redhogs.cronparser.parser;
 public class Always extends CronFieldExpression {
     private Every every;
 
-    public Always(){
-        this(null);
+    public Always(FieldConstraints constraints){
+        this(constraints, null);
     }
 
-    public Always(String every) {
-        super();
+    public Always(FieldConstraints constraints, String every) {
+        super(constraints);
         if(every != null){
-            this.every = new Every(every);
+            this.every = new Every(constraints, every);
         } else {
-            this.every = new Every("1");
+            this.every = new Every(constraints, "1");
         }
     }
 }

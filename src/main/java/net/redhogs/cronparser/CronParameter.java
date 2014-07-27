@@ -1,8 +1,14 @@
 package net.redhogs.cronparser;
 
-/**
- * Created by jose.rozanec on 7/16/14.
- */
 public enum CronParameter {
-    SECOND, MINUTE, HOUR, DAY_OF_MONTH, MONTH, DAY_OF_WEEK, YEAR;
+    SECOND(0), MINUTE(1), HOUR(2), DAY_OF_MONTH(3), MONTH(4), DAY_OF_WEEK(5), YEAR(6);
+
+    private int order;
+    private CronParameter(int order){
+        this.order = order;
+    }
+
+    public int getOrder() {
+        return order;
+    }
 }

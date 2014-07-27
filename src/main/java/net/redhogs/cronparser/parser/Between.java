@@ -8,14 +8,14 @@ public class Between extends CronFieldExpression {
     private int to;
     private Every every;
 
-    public Between(String from, String to) {
-        this(from, to, "1");
+    public Between(FieldConstraints constraints, String from, String to) {
+        this(constraints, from, to, "1");
     }
 
-    public Between(String from, String to, String every) {
-        super();
-        this.from = validateInRange(intToInt(stringToInt(from)));
-        this.to = validateInRange(intToInt(stringToInt(to)));
-        this.every = new Every(every);
+    public Between(FieldConstraints constraints, String from, String to, String every) {
+        super(constraints);
+        this.from = constraints.validateInRange(constraints.intToInt(constraints.stringToInt(from)));
+        this.to = constraints.validateInRange(constraints.intToInt(constraints.stringToInt(to)));
+        this.every = new Every(constraints, every);
     }
 }
