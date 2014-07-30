@@ -39,6 +39,6 @@ class DescriptionStrategyFactory {
     }
 
     public static DescriptionStrategy hhMMssInstance(ResourceBundle bundle, final CronFieldExpression hours, final CronFieldExpression minutes, final CronFieldExpression seconds){
-        return new TimeDescriptionStrategy(hours, minutes, seconds);
+        return new TimeDescriptionStrategy(bundle, hours, minutes, seconds);
     }
 }
