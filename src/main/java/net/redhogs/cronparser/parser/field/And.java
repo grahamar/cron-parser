@@ -1,6 +1,7 @@
 package net.redhogs.cronparser.parser.field;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,5 +20,9 @@ public class And extends CronFieldExpression {
     public And and(CronFieldExpression exp) {
         expressions.add(exp);
         return this;
+    }
+
+    public List<CronFieldExpression> getExpressions(){
+        return Collections.unmodifiableList(expressions);
     }
 }

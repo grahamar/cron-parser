@@ -12,6 +12,8 @@ public class FieldConstraints {
     private int endRange;
 
     public FieldConstraints(){
+        stringMapping = new HashMap<String, Integer>();
+        intMapping = new HashMap<Integer, Integer>();
         startRange = 0;//no negatives!
         endRange = Integer.MAX_VALUE;
     }

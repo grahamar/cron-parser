@@ -1,10 +1,14 @@
 package net.redhogs.cronparser.parser.field;
 
 public class On extends CronFieldExpression {
-    private int number;
+    private int time;
 
     public On(FieldConstraints constraints, String exp){
         super(constraints);
-        number = constraints.validateInRange(constraints.intToInt(constraints.stringToInt(exp)));
+        time = constraints.validateInRange(constraints.intToInt(constraints.stringToInt(exp)));
+    }
+
+    public int getTime(){
+        return time;
     }
 }

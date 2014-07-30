@@ -18,4 +18,16 @@ public class Between extends CronFieldExpression {
         this.to = constraints.validateInRange(constraints.intToInt(constraints.stringToInt(to)));
         this.every = new Every(constraints, every);
     }
+
+    public int getFrom(){
+        return from;
+    }
+
+    public int getTo(){
+        return to;
+    }
+
+    public Every getEvery(){
+        return every;
+    }
 }

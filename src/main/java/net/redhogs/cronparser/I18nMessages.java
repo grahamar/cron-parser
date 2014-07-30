@@ -3,6 +3,7 @@ package net.redhogs.cronparser;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@Deprecated
 public final class I18nMessages {
 
     public static final Locale DEFAULT_LOCALE = Locale.UK;

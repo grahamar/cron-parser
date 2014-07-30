@@ -22,7 +22,7 @@ public class CronParser {
 
         if(lastFieldOptional){
             List<CronField> shortExpression = new ArrayList<CronField>();
-            Collections.copy(shortExpression, expression);
+            shortExpression.addAll(expression);
             shortExpression.remove(shortExpression.size()-1);
             expressions.put(shortExpression.size(), shortExpression);
         }
@@ -32,6 +32,7 @@ public class CronParser {
         if (StringUtils.isEmpty(expression)) {
             throw new IllegalArgumentException("Empty expression!");
         }
+        expression = expression.replace("?", "*");
         String[] expressionParts = expression.split(" ");
         if (expressions.containsKey(expressionParts.length)) {
             List<CronFieldParseResult> results = new ArrayList<CronFieldParseResult>();

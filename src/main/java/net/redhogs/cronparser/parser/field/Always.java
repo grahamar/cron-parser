@@ -18,4 +18,8 @@ public class Always extends CronFieldExpression {
             this.every = new Every(constraints, "1");
         }
     }
+
+    public Every getEvery(){
+        return every;
+    }
 }
