@@ -35,7 +35,7 @@ public class CronDescriptor {
                         .append(describeMonth(expressions)).append(" ")
                         .append(describeDayOfWeek(expressions)).append(" ")
                         .append(describeYear(expressions))
-                        .toString().replaceAll("\\s+", " ");
+                        .toString().replaceAll("\\s+", " ").trim();
 
     }
 
@@ -80,7 +80,7 @@ public class CronDescriptor {
                         bundle,
                         expressions.get(CronParameter.YEAR)
                 ).describe(),
-                bundle.getString("day"));
+                bundle.getString("year"));
     }
 
     public static CronDescriptor instance(){

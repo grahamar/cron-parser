@@ -14,11 +14,6 @@ public class FieldParserTest {
     }
 
     @Test
-    public void testParseQuestionMark() throws Exception {
-        assertEquals(1, ((Always) parser.parse("?")).getEvery().getTime());
-    }
-
-    @Test
     public void testParseAlways() throws Exception {
         assertEquals(1, ((Always) parser.parse("*")).getEvery().getTime());
     }

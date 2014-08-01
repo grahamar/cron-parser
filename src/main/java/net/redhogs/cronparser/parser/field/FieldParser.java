@@ -15,7 +15,6 @@ class FieldParser {
     }
 
     CronFieldExpression parse(String expression) {
-        expression = expression.replace("?", "*");
         if (!StringUtils.containsAny(expression, specialCharsMinusStar)) {
             if ("*".equals(expression)) {
                 return new Always(constraints);

@@ -71,7 +71,7 @@ abstract class DescriptionStrategy {
 
     protected String describe(Every every){
         if(every.getTime() > 1){
-            return String.format("%s %s ", bundle.getString("every_x"), nominalValue(every.getTime())) + "%s";
+            return String.format("%s %s ", bundle.getString("every"), nominalValue(every.getTime())) + "%s";
         }
         return bundle.getString("every") + " %s ";
     }
