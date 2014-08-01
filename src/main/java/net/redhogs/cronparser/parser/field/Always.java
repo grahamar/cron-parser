@@ -13,9 +13,9 @@ public class Always extends CronFieldExpression {
     public Always(FieldConstraints constraints, String every) {
         super(constraints);
         if(every != null){
-            this.every = new Every(constraints, every);
+            this.every = new Every(getConstraints(), every);
         } else {
-            this.every = new Every(constraints, "1");
+            this.every = new Every(getConstraints(), "1");
         }
     }
 

@@ -8,7 +8,10 @@ public class Every extends CronFieldExpression {
 
     public Every(FieldConstraints constraints, String time) {
         super(constraints);
-        this.time = constraints.stringToInt(time);
+        if(time == null){
+            time = "1";
+        }
+        this.time = getConstraints().stringToInt(time);
     }
 
     public int getTime() {

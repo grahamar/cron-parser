@@ -5,15 +5,14 @@ public class On extends CronFieldExpression {
     private int nth;
     private SpecialCharEnum specialChar;
 
-
     public On(FieldConstraints constraints, String exp){
         super(constraints);
         nth = -1;
         specialChar = SpecialCharEnum.NONE;
-        time = constraints.validateInRange(
-                constraints.intToInt(
-                        constraints.stringToInt(
-                                retrieveSpecialChar(constraints, exp)
+        time = getConstraints().validateInRange(
+                getConstraints().intToInt(
+                        getConstraints().stringToInt(
+                                retrieveSpecialChar(getConstraints(), exp)
                         )
                 )
         );
@@ -32,6 +31,9 @@ public class On extends CronFieldExpression {
             specialChar = SpecialCharEnum.HASH;
             String [] array = exp.split("#");
             nth = constraints.validateInRange(constraints.intToInt(constraints.stringToInt(array[1])));
+            if(array[0].isEmpty()){
+                throw new RuntimeException("Time should be specified!");
+            }
             return array[0];
         }
         if(exp.contains("L")){

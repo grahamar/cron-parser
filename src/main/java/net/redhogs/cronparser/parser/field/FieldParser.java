@@ -14,9 +14,8 @@ class FieldParser {
         constraints = FieldConstraints.nullConstraints();
     }
 
-    //TODO add support for special characters: http://en.wikipedia.org/wiki/Cron#Format
-    //Some of them depend on distribution, so we need to let user define this
     CronFieldExpression parse(String expression) {
+        expression = expression.replace("?", "*");
         if (!StringUtils.containsAny(expression, specialCharsMinusStar)) {
             if ("*".equals(expression)) {
                 return new Always(constraints);
