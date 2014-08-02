@@ -26,6 +26,10 @@ public class On extends CronFieldExpression {
         return nth;
     }
 
+    public SpecialCharEnum getSpecialChar() {
+        return specialChar;
+    }
+
     private String retrieveSpecialChar(FieldConstraints constraints, String exp){
         if(exp.contains("#")){
             specialChar = SpecialCharEnum.HASH;

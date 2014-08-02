@@ -95,4 +95,28 @@ public class CronDescriptorTest {
         results.add(new CronFieldParseResult(CronParameter.MONTH, new Between(null, ""+monthStart, ""+monthEnd)));
         assertEquals("every minute every month between February and March", descriptor.describe(results));
     }
+
+    @Test
+    public void testLastDayOfWeekInMonth() throws Exception {
+        int dayOfWeek = 2;
+        int hour = 10;
+        int minute = 15;
+        List<CronFieldParseResult> results = Lists.newArrayList();
+        results.add(new CronFieldParseResult(CronParameter.HOUR, new On(null,""+hour)));
+        results.add(new CronFieldParseResult(CronParameter.MINUTE, new On(null,""+minute)));
+        results.add(new CronFieldParseResult(CronParameter.DAY_OF_WEEK, new On(null, String.format("%sL", dayOfWeek))));
+        assertEquals(String.format("At %s:%s last Tuesday of every month",hour, minute), descriptor.describe(results));
+    }
+
+    @Test
+    public void testNthDayOfWeekInMonth() throws Exception {
+        int dayOfWeek = 2;
+        int hour = 10;
+        int minute = 15;
+        List<CronFieldParseResult> results = Lists.newArrayList();
+        results.add(new CronFieldParseResult(CronParameter.HOUR, new On(null,""+hour)));
+        results.add(new CronFieldParseResult(CronParameter.MINUTE, new On(null,""+minute)));
+        results.add(new CronFieldParseResult(CronParameter.DAY_OF_WEEK, new On(null, String.format("%s#%s", dayOfWeek, dayOfWeek))));
+        assertEquals(String.format("At %s:%s Tuesday %s of every month",hour, minute, dayOfWeek), descriptor.describe(results));
+    }
 }
