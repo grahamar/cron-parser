@@ -56,7 +56,7 @@ abstract class DescriptionStrategy {
         List<CronFieldExpression> expressions = and.getExpressions();
         StringBuilder builder = new StringBuilder();
         builder.append(describe(expressions.get(0)));
-        for(int j = 0;j < expressions.size(); j++){
+        for(int j = 1;j < expressions.size(); j++){
             builder.append(String.format(" %s %s ", bundle.getString("and"), describe(expressions.get(j))));
         }
         return builder.toString();

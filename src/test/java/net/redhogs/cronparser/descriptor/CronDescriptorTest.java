@@ -32,10 +32,10 @@ public class CronDescriptorTest {
                         Lists.asList(new CronFieldParseResult(CronParameter.MINUTE, expression), new CronFieldParseResult[]{})
                 )
         );
-        assertEquals(String.format("every %s hours", time), descriptor.describe(
-                        Lists.asList(new CronFieldParseResult(CronParameter.HOUR, expression), new CronFieldParseResult[]{})
-                )
-        );
+        List<CronFieldParseResult> params = Lists.newArrayList();
+        params.add(new CronFieldParseResult(CronParameter.HOUR, expression));
+        params.add(new CronFieldParseResult(CronParameter.MINUTE, new On(null, ""+time)));
+        assertEquals(String.format("every %s hours At minute %s", time, time), descriptor.describe(params));
     }
 
     @Test
@@ -72,5 +72,27 @@ public class CronDescriptorTest {
         results.add(new CronFieldParseResult(CronParameter.MINUTE, new Always(null)));
         results.add(new CronFieldParseResult(CronParameter.SECOND, new Always(null)));
         assertEquals(String.format("At %s:00", hour), descriptor.describe(results));
+    }
+
+    @Test
+    public void testEverySecondInMonth() throws Exception {
+        int month = 2;
+        List<CronFieldParseResult> results = Lists.newArrayList();
+        results.add(new CronFieldParseResult(CronParameter.HOUR, new Always(null)));
+        results.add(new CronFieldParseResult(CronParameter.MINUTE, new Always(null)));
+        results.add(new CronFieldParseResult(CronParameter.SECOND, new Always(null)));
+        results.add(new CronFieldParseResult(CronParameter.MONTH, new On(null, ""+month)));
+        assertEquals("every second At February month", descriptor.describe(results));
+    }
+
+    @Test
+    public void testEveryMinuteBetweenMonths() throws Exception {
+        int monthStart = 2;
+        int monthEnd = 3;
+        List<CronFieldParseResult> results = Lists.newArrayList();
+        results.add(new CronFieldParseResult(CronParameter.HOUR, new Always(null)));
+        results.add(new CronFieldParseResult(CronParameter.MINUTE, new Always(null)));
+        results.add(new CronFieldParseResult(CronParameter.MONTH, new Between(null, ""+monthStart, ""+monthEnd)));
+        assertEquals("every minute every month between February and March", descriptor.describe(results));
     }
 }
