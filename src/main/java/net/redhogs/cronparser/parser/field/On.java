@@ -42,7 +42,12 @@ public class On extends CronFieldExpression {
         }
         if(exp.contains("L")){
             specialChar = SpecialCharEnum.L;
-            return exp.replace("L", "");
+            exp = exp.replace("L", "");
+            if("".equals(exp)){
+                return "0";//to avoid a NumberFormatException
+            }else{
+                return exp;
+            }
         }
         if(exp.contains("W")){
             specialChar = SpecialCharEnum.W;

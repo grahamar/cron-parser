@@ -38,6 +38,29 @@ class DescriptionStrategyFactory {
         return dow;
     }
 
+    public static DescriptionStrategy daysOfMonthInstance(final ResourceBundle bundle, final CronFieldExpression expression){
+        NominalDescriptionStrategy dow = new NominalDescriptionStrategy(bundle, null, expression);
+
+        dow.addDescription(new Function<CronFieldExpression, String>() {
+            @Override
+            public String apply(CronFieldExpression cronFieldExpression) {
+                if(cronFieldExpression instanceof On){
+                    On on = (On)cronFieldExpression;
+                    switch (on.getSpecialChar()){
+                        case W:
+                            return String.format("%s %s %s ", bundle.getString("the_nearest_weekday_to_the"), on.getTime(), bundle.getString("of_the_month"));
+                        case L:
+                            return bundle.getString("last_day_of_month");
+                        default:
+                            return "";
+                    }
+                }
+                return "";
+            }
+        });
+        return dow;
+    }
+
     public static DescriptionStrategy monthsInstance(final ResourceBundle bundle, final CronFieldExpression expression){
         return new NominalDescriptionStrategy(
                 bundle,

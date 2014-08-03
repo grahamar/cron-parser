@@ -50,7 +50,7 @@ public class CronDescriptor {
 
     private String describeDayOfMonth(Map<CronParameter, CronFieldExpression> expressions) {
         return String.format(
-                DescriptionStrategyFactory.plainInstance(
+                DescriptionStrategyFactory.daysOfMonthInstance(
                         bundle,
                         expressions.get(CronParameter.DAY_OF_MONTH)
                 ).describe(), bundle.getString("day"));
