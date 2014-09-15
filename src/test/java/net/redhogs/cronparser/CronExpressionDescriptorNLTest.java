@@ -194,7 +194,32 @@ public class CronExpressionDescriptorNLTest {
 
     @Test
     public void testEveryXMinutePastTheHourWithInterval() throws Exception {
-      Assert.assertEquals("Elke 2 minuten, van 00 tot 30 minuten na het uur, om 5:00 PM, van maandag tot vrijdag", CronExpressionDescriptor.getDescription("0 0-30/2 17 ? * MON-FRI", DUTCH));
+        Assert.assertEquals("Elke 2 minuten, van 00 tot 30 minuten na het uur, om 5:00 PM, van maandag tot vrijdag", CronExpressionDescriptor.getDescription("0 0-30/2 17 ? * MON-FRI", DUTCH));
+    }
+
+    @Test
+    public void testOneYearOnlyWithSeconds() throws Exception {
+        Assert.assertEquals("Elke seconde, alleen in 2013", CronExpressionDescriptor.getDescription("* * * * * * 2013", DUTCH));
+    }
+
+    @Test
+    public void testOneYearOnlyWithoutSeconds() throws Exception {
+        Assert.assertEquals("Elke minuut, alleen in 2013", CronExpressionDescriptor.getDescription("* * * * * 2013", DUTCH));
+    }
+
+    @Test
+    public void testTwoYearsOnly() throws Exception {
+        Assert.assertEquals("Elke minuut, alleen in 2013 en 2014", CronExpressionDescriptor.getDescription("* * * * * 2013,2014", DUTCH));
+    }
+
+    @Test
+    public void testYearRange2() throws Exception {
+        Assert.assertEquals("Om 12:23 PM, van januari tot februari, van 2013 tot 2014", CronExpressionDescriptor.getDescription("23 12 * JAN-FEB * 2013-2014", DUTCH));
+    }
+
+    @Test
+    public void testYearRange3() throws Exception {
+        Assert.assertEquals("Om 12:23 PM, van januari tot maart, van 2013 tot 2015", CronExpressionDescriptor.getDescription("23 12 * JAN-MAR * 2013-2015", DUTCH));
     }
 
 }

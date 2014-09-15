@@ -195,9 +195,40 @@ public class CronExpressionDescriptorTest {
         Assert.assertEquals("At 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, and 55 minutes past the hour", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *"));
     }
 
+    /**
+     * @since https://github.com/RedHogs/cron-parser/issues/10
+     */
     @Test
     public void testEveryXMinutePastTheHourWithInterval() throws Exception {
-      Assert.assertEquals("Every 2 minutes, minutes 00 through 30 past the hour, at 5:00 PM, Monday through Friday", CronExpressionDescriptor.getDescription("0 0-30/2 17 ? * MON-FRI"));
+        Assert.assertEquals("Every 2 minutes, minutes 00 through 30 past the hour, at 5:00 PM, Monday through Friday", CronExpressionDescriptor.getDescription("0 0-30/2 17 ? * MON-FRI"));
+    }
+
+    /**
+     * @since https://github.com/RedHogs/cron-parser/issues/13
+     */
+    @Test
+    public void testOneYearOnlyWithSeconds() throws Exception {
+        Assert.assertEquals("Every second, only in 2013", CronExpressionDescriptor.getDescription("* * * * * * 2013"));
+    }
+
+    @Test
+    public void testOneYearOnlyWithoutSeconds() throws Exception {
+        Assert.assertEquals("Every minute, only in 2013", CronExpressionDescriptor.getDescription("* * * * * 2013"));
+    }
+
+    @Test
+    public void testTwoYearsOnly() throws Exception {
+        Assert.assertEquals("Every minute, only in 2013 and 2014", CronExpressionDescriptor.getDescription("* * * * * 2013,2014"));
+    }
+
+    @Test
+    public void testYearRange2() throws Exception {
+        Assert.assertEquals("At 12:23 PM, January through February, 2013 through 2014", CronExpressionDescriptor.getDescription("23 12 * JAN-FEB * 2013-2014"));
+    }
+
+    @Test
+    public void testYearRange3() throws Exception {
+        Assert.assertEquals("At 12:23 PM, January through March, 2013 through 2015", CronExpressionDescriptor.getDescription("23 12 * JAN-MAR * 2013-2015"));
     }
 
 }

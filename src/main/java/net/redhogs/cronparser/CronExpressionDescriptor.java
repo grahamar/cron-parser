@@ -82,6 +82,9 @@ public class CronExpressionDescriptor {
                 case DAYOFWEEK:
                     description = getDayOfWeekDescription(expressionParts, options);
                     break;
+                case YEAR:
+                    description = getYearDescription(expressionParts, options);
+                    break;
                 default:
                     description = getSecondsDescription(expressionParts);
                     break;
@@ -96,6 +99,14 @@ public class CronExpressionDescriptor {
             }
         }
         return description;
+    }
+
+    /**
+     * @param expressionParts
+     * @return
+     */
+    private static String getYearDescription(String[] expressionParts, Options options) {
+      return new YearDescriptionBuilder(options).getSegmentDescription(expressionParts[6], ", "+I18nMessages.get("every_year"));
     }
 
     /**
@@ -222,7 +233,8 @@ public class CronExpressionDescriptor {
         String dayOfMonthDesc = getDayOfMonthDescription(expressionParts);
         String monthDesc = getMonthDescription(expressionParts);
         String dayOfWeekDesc = getDayOfWeekDescription(expressionParts, options);
-        description = MessageFormat.format("{0}{1}{2}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc);
+        String yearDesc = getYearDescription(expressionParts, options);
+        description = MessageFormat.format("{0}{1}{2}{3}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc, yearDesc);
         description = transformVerbosity(description, options);
         description = transformCase(description, options);
         return description;

@@ -1,5 +1,6 @@
 package net.redhogs.cronparser;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
@@ -16,7 +17,7 @@ class ExpressionParser {
     }
 
     public static String[] parse(String expression) throws ParseException {
-        String[] parsed = new String[6];
+        String[] parsed = new String[] {"", "", "", "", "", "", ""};
         if (StringUtils.isEmpty(expression)) {
             throw new IllegalArgumentException(I18nMessages.get("expression_empty_exception"));
         }
@@ -24,13 +25,21 @@ class ExpressionParser {
         String[] expressionParts = expression.split(" ");
         if (expressionParts.length < 5) {
             throw new ParseException(expression, 0);
-        } else if (expressionParts.length > 6) {
-            throw new ParseException(expression, 6);
         } else if (expressionParts.length == 5) {
-            parsed[0] = StringUtils.EMPTY; // 5 part CRON so default seconds to empty and shift array
+            parsed[0] = StringUtils.EMPTY; // 5 part CRON so shift array past seconds element
             System.arraycopy(expressionParts, 0, parsed, 1, 5);
+        } else if (expressionParts.length == 6) {
+            //If last element ends with 4 digits, a year element has been supplied and no seconds element
+            RegularExpression yearRegex = new RegularExpression("\\d{4}$");
+            if (yearRegex.matches(expressionParts[5])) {
+              System.arraycopy(expressionParts, 0, parsed, 1, 6);
+            } else {
+              System.arraycopy(expressionParts, 0, parsed, 0, 6);
+            }
+        } else if (expressionParts.length == 7) {
+          parsed = expressionParts;
         } else {
-            parsed = expressionParts;
+          throw new ParseException(expression, 7);
         }
 
         normaliseExpression(parsed);
@@ -55,7 +64,7 @@ class ExpressionParser {
         expressionParts[5] = expressionParts[5].startsWith("1/") ? expressionParts[5].replace("1/", "*/") : expressionParts[5]; // DOW
 
         // convert */1 to *
-        for (int i = 0; i <= 5; i++) {
+        for (int i = 0; i < expressionParts.length; i++) {
             if ("*/1".equals(expressionParts[i])) {
                 expressionParts[i] = "*";
             }

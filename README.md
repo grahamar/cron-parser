@@ -12,7 +12,7 @@ License: MIT
 **Features**
 
  * Supports all cron expression special characters including * / , - ? L W, #.
- * Supports 5 or 6 (w/ seconds) part cron expressions.  Does NOT support Year in cron expression.
+ * Supports 5, 6 (w/ seconds or year), or 7 (w/ seconds and year) part cron expressions.
  * Provides casing options (Sentence, Title, Lower, etc.).
  * Support for non-standard non-zero-based week day numbers.
  * Supports printing to locale specific human readable format (Italian, English, Spanish and Dutch so far...).
