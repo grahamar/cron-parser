@@ -46,12 +46,12 @@ class ExpressionParser {
         expressionParts[5] = expressionParts[5].replace('?', '*');
 
         // Convert 0/, 1/ to */
-        expressionParts[0] = expressionParts[0].replace("0/", "*/"); // seconds
-        expressionParts[1] = expressionParts[1].replace("0/", "*/"); // minutes
-        expressionParts[2] = expressionParts[2].replace("0/", "*/"); // hours
-        expressionParts[3] = expressionParts[3].replace("1/", "*/"); // DOM
-        expressionParts[4] = expressionParts[4].replace("1/", "*/"); // Month
-        expressionParts[5] = expressionParts[5].replace("1/", "*/"); // DOW
+        expressionParts[0] = expressionParts[0].startsWith("0/") ? expressionParts[0].replace("0/", "*/") : expressionParts[0]; // seconds
+        expressionParts[1] = expressionParts[1].startsWith("0/") ? expressionParts[1].replace("0/", "*/") : expressionParts[1]; // minutes
+        expressionParts[2] = expressionParts[2].startsWith("0/") ? expressionParts[2].replace("0/", "*/") : expressionParts[2]; // hours
+        expressionParts[3] = expressionParts[3].startsWith("1/") ? expressionParts[3].replace("1/", "*/") : expressionParts[3]; // DOM
+        expressionParts[4] = expressionParts[4].startsWith("1/") ? expressionParts[4].replace("1/", "*/") : expressionParts[4]; // Month
+        expressionParts[5] = expressionParts[5].startsWith("1/") ? expressionParts[5].replace("1/", "*/") : expressionParts[5]; // DOW
 
         // convert */1 to *
         for (int i = 0; i <= 5; i++) {

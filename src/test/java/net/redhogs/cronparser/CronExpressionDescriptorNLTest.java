@@ -192,4 +192,9 @@ public class CronExpressionDescriptorNLTest {
         Assert.assertEquals("Om 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, en 55 minuten na het uur", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *", DUTCH));
     }
 
+    @Test
+    public void testEveryXMinutePastTheHourWithInterval() throws Exception {
+      Assert.assertEquals("Elke 2 minuten, van 00 tot 30 minuten na het uur, om 5:00 PM, van maandag tot vrijdag", CronExpressionDescriptor.getDescription("0 0-30/2 17 ? * MON-FRI", DUTCH));
+    }
+
 }

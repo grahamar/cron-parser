@@ -189,4 +189,9 @@ public class CronExpressionDescriptorITTest {
         Assert.assertEquals("05 minuti dopo l'ora", CronExpressionDescriptor.getDescription("0 5 0/1 * * ?", ITALIAN));
     }
 
+    @Test
+    public void testEveryXMinutePastTheHourWithInterval() throws Exception {
+      Assert.assertEquals("Ogni 2 minuti, da 00 fino a 30 minute dopo l'ora, 5:00 PM, lunedì fino a venerdì", CronExpressionDescriptor.getDescription("0 0-30/2 17 ? * MON-FRI", ITALIAN));
+    }
+
 }

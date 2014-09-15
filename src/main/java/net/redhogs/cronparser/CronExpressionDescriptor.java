@@ -175,7 +175,7 @@ public class CronExpressionDescriptor {
         // Handle special cases first
         if (!StringUtils.containsAny(minutesExpression, specialCharacters) && !StringUtils.containsAny(hoursExpression, specialCharacters) && !StringUtils.containsAny(secondsExpression, specialCharacters)) {
             description.append(I18nMessages.get("at")).append(" ").append(DateAndTimeUtils.formatTime(hoursExpression, minutesExpression, secondsExpression)); // Specific time of day (e.g. 10 14)
-        } else if (minutesExpression.contains("-") && !StringUtils.containsAny(hoursExpression, specialCharacters)) {
+        } else if (minutesExpression.contains("-") && !minutesExpression.contains("/") && !StringUtils.containsAny(hoursExpression, specialCharacters)) {
             // Minute range in single hour (e.g. 0-10 11)
             String[] minuteParts = minutesExpression.split("-");
             description.append(MessageFormat.format(I18nMessages.get("every_minute_between"), DateAndTimeUtils.formatTime(hoursExpression, minuteParts[0]),
