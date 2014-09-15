@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.text.ParseException;
+import java.util.Locale;
 
 /**
  * @author grhodes
@@ -71,7 +72,7 @@ class ExpressionParser {
         if(!StringUtils.isNumeric(expressionParts[4])) {
             for (int i = 1; i <= 12; i++) {
                 DateTime currentMonth = new DateTime().withDayOfMonth(1).withMonthOfYear(i);
-                String currentMonthDescription = currentMonth.toString("MMM").toUpperCase();
+                String currentMonthDescription = currentMonth.toString("MMM", Locale.ENGLISH).toUpperCase();
                 expressionParts[4] = expressionParts[4].replace(currentMonthDescription, String.valueOf(i));
             }
         }
