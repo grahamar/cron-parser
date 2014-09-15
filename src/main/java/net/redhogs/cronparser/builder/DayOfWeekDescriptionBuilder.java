@@ -6,8 +6,10 @@ import net.redhogs.cronparser.Options;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 /**
  * @author grhodes
@@ -46,7 +48,8 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
             }
             return DateAndTimeUtils.getDayOfWeekName(dayOfWeekNum);
         } else {
-            return DateTimeFormat.forPattern("EEE").parseDateTime(WordUtils.capitalizeFully(exp)).dayOfWeek().getAsText(I18nMessages.getCurrentLocale());
+            DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("EEE").withLocale(Locale.ENGLISH);
+            return dateTimeFormatter.parseDateTime(WordUtils.capitalizeFully(exp)).dayOfWeek().getAsText(I18nMessages.getCurrentLocale());
         }
     }
 
