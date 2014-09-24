@@ -1,11 +1,11 @@
 package net.redhogs.cronparser;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * @author grhodes
@@ -30,8 +30,8 @@ class ExpressionParser {
             System.arraycopy(expressionParts, 0, parsed, 1, 5);
         } else if (expressionParts.length == 6) {
             //If last element ends with 4 digits, a year element has been supplied and no seconds element
-            RegularExpression yearRegex = new RegularExpression("\\d{4}$");
-            if (yearRegex.matches(expressionParts[5])) {
+            Pattern yearRegex = Pattern.compile("(.*)\\d{4}$");
+            if (yearRegex.matcher(expressionParts[5]).matches()) {
               System.arraycopy(expressionParts, 0, parsed, 1, 6);
             } else {
               System.arraycopy(expressionParts, 0, parsed, 0, 6);
