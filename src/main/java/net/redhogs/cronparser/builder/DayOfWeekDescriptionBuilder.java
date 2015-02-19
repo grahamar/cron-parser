@@ -60,7 +60,7 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getBetweenDescriptionFormat(String expression) {
-        return ", "+I18nMessages.get("between_description_format");
+        return ", "+I18nMessages.get("between_weekday_description_format");
     }
 
     @Override
