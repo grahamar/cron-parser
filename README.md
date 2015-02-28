@@ -16,7 +16,7 @@ License: MIT
  * Supports 5, 6 (w/ seconds or year), or 7 (w/ seconds and year) part cron expressions.
  * Provides casing options (Sentence, Title, Lower, etc.).
  * Support for non-standard non-zero-based week day numbers.
- * Supports printing to locale specific human readable format (Italian, English, Spanish and Dutch so far...).
+ * Supports printing to locale specific human readable format (Italian, English, Spanish, Romanian and Dutch so far...).
 
 **Download**
 
@@ -24,4 +24,4 @@ cron-parser is available in the [maven central repository](http://search.maven.o
 
 **Usage Examples (Unit Tests)**
 
-See src/test/java/com/gr/cronparser/CronExpressionDescriptorTest.java
+See cron-parser-core/src/test/java/com/gr/cronparser/CronExpressionDescriptorTest.java
