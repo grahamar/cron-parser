@@ -20,7 +20,7 @@ License: MIT
 
 **Download**
 
-cron-parser is available in the [maven central repository](http://search.maven.org/#browse|987144470), please select the latest version from there.
+cron-parser is available in the [maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.redhogs.cronparser%22), please select the latest version from there.
 
 **Usage Examples (Unit Tests)**
 
