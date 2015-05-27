@@ -90,6 +90,11 @@ class ExpressionParser {
         if ("0".equals(expressionParts[0])) {
             expressionParts[0] = StringUtils.EMPTY;
         }
+
+        // convert 0 DOW to 7 so that 0 for Sunday in zeroBasedDayOfWeek is valid
+        if ("0".equals(expressionParts[5])) {
+            expressionParts[5] = "7";
+        }
     }
 
 }
