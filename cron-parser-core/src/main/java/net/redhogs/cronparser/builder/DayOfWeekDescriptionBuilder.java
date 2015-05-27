@@ -41,7 +41,7 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
         }
         if (StringUtils.isNumeric(exp)) {
             int dayOfWeekNum = Integer.parseInt(exp);
-            if(options != null && !options.isZeroBasedDayOfWeek() && dayOfWeekNum <= 1) {
+            if(options != null && !options.isZeroBasedDayOfWeek() && dayOfWeekNum <= 1 || dayOfWeekNum == 0) {
                 dayOfWeekNum = 7;
             } else if(options != null && !options.isZeroBasedDayOfWeek()) {
                 dayOfWeekNum -= 1;
