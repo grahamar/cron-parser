@@ -8,7 +8,7 @@ import org.junit.Test;
 public class CronExpressionDescriptorROTest {
 
 	private static final Locale ROMANIAN = new Locale("ro");
-	
+
     @Test
     public void testEverySecond() throws Exception {
         Assert.assertEquals("În fiecare secundă", CronExpressionDescriptor.getDescription("* * * * * *", ROMANIAN));
@@ -77,7 +77,10 @@ public class CronExpressionDescriptorROTest {
 
     @Test
     public void testOnceAWeek() throws Exception {
+        Assert.assertEquals("La 9:46 AM, numai duminică", CronExpressionDescriptor.getDescription("46 9 * * 0", ROMANIAN));
+        Assert.assertEquals("La 9:46 AM, numai duminică", CronExpressionDescriptor.getDescription("46 9 * * 7", ROMANIAN));
         Assert.assertEquals("La 9:46 AM, numai luni", CronExpressionDescriptor.getDescription("46 9 * * 1", ROMANIAN));
+        Assert.assertEquals("La 9:46 AM, numai sâmbătă", CronExpressionDescriptor.getDescription("46 9 * * 6", ROMANIAN));
     }
 
     @Test
@@ -87,6 +90,20 @@ public class CronExpressionDescriptorROTest {
         Assert.assertEquals("La 9:46 AM, numai duminică", CronExpressionDescriptor.getDescription("46 9 * * 1", options, ROMANIAN));
         Assert.assertEquals("La 9:46 AM, numai luni", CronExpressionDescriptor.getDescription("46 9 * * 2", options, ROMANIAN));
         Assert.assertEquals("La 9:46 AM, numai sâmbătă", CronExpressionDescriptor.getDescription("46 9 * * 7", options, ROMANIAN));
+    }
+
+    @Test
+    public void testTwiceAWeek() throws Exception {
+        Assert.assertEquals("La 9:46 AM, numai duminică și sâmbătă", CronExpressionDescriptor.getDescription("46 9 * * 0,6", ROMANIAN));
+        Assert.assertEquals("La 9:46 AM, numai sâmbătă și duminică", CronExpressionDescriptor.getDescription("46 9 * * 6,7", ROMANIAN));
+    }
+
+    @Test
+    public void testTwiceAWeekNonZeroBased() throws Exception {
+        Options options = new Options();
+        options.setZeroBasedDayOfWeek(false);
+        Assert.assertEquals("La 9:46 AM, numai duminică și luni", CronExpressionDescriptor.getDescription("46 9 * * 1,2", options, ROMANIAN));
+        Assert.assertEquals("La 9:46 AM, numai vineri și sâmbătă", CronExpressionDescriptor.getDescription("46 9 * * 6,7", options, ROMANIAN));
     }
 
     @Test
@@ -122,16 +139,20 @@ public class CronExpressionDescriptorROTest {
     @Test
     public void testDayOfWeekRange() throws Exception {
         Assert.assertEquals("La fiecare 5 minute, la 3:00 PM, de luni până vineri", CronExpressionDescriptor.getDescription("*/5 15 * * MON-FRI", ROMANIAN));
+        Assert.assertEquals("La fiecare 5 minute, la 3:00 PM, de duminică până sâmbătă", CronExpressionDescriptor.getDescription("*/5 15 * * 0-6", ROMANIAN));
+        Assert.assertEquals("La fiecare 5 minute, la 3:00 PM, de sâmbătă până duminică", CronExpressionDescriptor.getDescription("*/5 15 * * 6-7", ROMANIAN));
     }
 
     @Test
     public void testDayOfWeekOnceInMonth() throws Exception {
         Assert.assertEquals("În fiecare minut, în a treia luni a lunii", CronExpressionDescriptor.getDescription("* * * * MON#3", ROMANIAN));
+        Assert.assertEquals("În fiecare minut, în a treia duminică a lunii", CronExpressionDescriptor.getDescription("* * * * 0#3", ROMANIAN));
     }
 
     @Test
     public void testLastDayOfTheWeekOfTheMonth() throws Exception {
         Assert.assertEquals("În fiecare minut, în ultima joi din lună", CronExpressionDescriptor.getDescription("* * * * 4L", ROMANIAN));
+        Assert.assertEquals("În fiecare minut, în ultima duminică din lună", CronExpressionDescriptor.getDescription("* * * * 0L", ROMANIAN));
     }
 
     @Test
@@ -229,6 +250,17 @@ public class CronExpressionDescriptorROTest {
     @Test
     public void testYearRange3() throws Exception {
         Assert.assertEquals("La 12:23 PM, din ianuarie până în martie, din 2013 până în 2015", CronExpressionDescriptor.getDescription("23 12 * JAN-MAR * 2013-2015", ROMANIAN));
+    }
+
+    @Test
+    public void testIssue26() throws Exception {
+        Assert.assertEquals("La 05 și 10 minute în fiecare oră", CronExpressionDescriptor.getDescription("5,10 0 * * *", ROMANIAN));
+        Assert.assertEquals("La 05 și 10 minute în fiecare oră, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5,10 0 2 * *", ROMANIAN));
+        Assert.assertEquals("La fiecare 10 minute, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5/10 0 2 * *", ROMANIAN));
+
+        Assert.assertEquals("La secunda 5 și 6", CronExpressionDescriptor.getDescription("5,6 0 0 * * *", ROMANIAN));
+        Assert.assertEquals("La secunda 5 și 6, la 1:00 AM", CronExpressionDescriptor.getDescription("5,6 0 1 * * *", ROMANIAN));
+        Assert.assertEquals("La secunda 5 și 6, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5,6 0 0 2 * *", ROMANIAN));
     }
 
 }

@@ -83,7 +83,7 @@ public class Options {
      * </ul>
      * If we are not zero based
      * <ul>
-     * <li>day of week (1 - 7) (1 to 6 are Sunday to Saturday, or use names; 7 is Saturday)</li>
+     * <li>day of week (1 - 7) (1 to 7 are Sunday to Saturday, or use names)</li>
      * </ul>
      * @return if we are zero-based or not
      */

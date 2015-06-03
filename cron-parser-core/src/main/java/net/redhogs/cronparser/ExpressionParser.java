@@ -16,7 +16,15 @@ class ExpressionParser {
     private ExpressionParser() {
     }
 
+    /**
+     * @deprecated Use ExpressionParser.parse(String, Options) instead.
+     */
+    @Deprecated
     public static String[] parse(String expression) throws ParseException {
+        return parse(expression, null);
+    }
+
+    public static String[] parse(String expression, Options options) throws ParseException {
         String[] parsed = new String[] {"", "", "", "", "", "", ""};
         if (StringUtils.isEmpty(expression)) {
             throw new IllegalArgumentException(I18nMessages.get("expression_empty_exception"));
@@ -42,7 +50,7 @@ class ExpressionParser {
           throw new ParseException(expression, 7);
         }
 
-        normaliseExpression(parsed);
+        normaliseExpression(parsed, options);
 
         return parsed;
     }
@@ -50,7 +58,7 @@ class ExpressionParser {
     /**
      * @param expressionParts
      */
-    private static void normaliseExpression(String[] expressionParts) {
+    private static void normaliseExpression(String[] expressionParts, Options options) {
         // Convert ? to * only for day of month and day of week
         expressionParts[3] = expressionParts[3].replace('?', '*');
         expressionParts[5] = expressionParts[5].replace('?', '*');
@@ -89,6 +97,11 @@ class ExpressionParser {
         // convert 0 second to (empty)
         if ("0".equals(expressionParts[0])) {
             expressionParts[0] = StringUtils.EMPTY;
+        }
+
+        // convert 0 DOW to 7 so that 0 for Sunday in zeroBasedDayOfWeek is valid
+        if((options == null || options.isZeroBasedDayOfWeek()) && "0".equals(expressionParts[5])) {
+            expressionParts[5] = "7";
         }
     }
 

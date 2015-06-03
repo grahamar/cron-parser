@@ -77,7 +77,10 @@ public class CronExpressionDescriptorTest {
 
     @Test
     public void testOnceAWeek() throws Exception {
+        Assert.assertEquals("At 9:46 AM, only on Sunday", CronExpressionDescriptor.getDescription("46 9 * * 0"));
+        Assert.assertEquals("At 9:46 AM, only on Sunday", CronExpressionDescriptor.getDescription("46 9 * * 7"));
         Assert.assertEquals("At 9:46 AM, only on Monday", CronExpressionDescriptor.getDescription("46 9 * * 1"));
+        Assert.assertEquals("At 9:46 AM, only on Saturday", CronExpressionDescriptor.getDescription("46 9 * * 6"));
     }
 
     @Test
@@ -87,6 +90,21 @@ public class CronExpressionDescriptorTest {
         Assert.assertEquals("At 9:46 AM, only on Sunday", CronExpressionDescriptor.getDescription("46 9 * * 1", options));
         Assert.assertEquals("At 9:46 AM, only on Monday", CronExpressionDescriptor.getDescription("46 9 * * 2", options));
         Assert.assertEquals("At 9:46 AM, only on Saturday", CronExpressionDescriptor.getDescription("46 9 * * 7", options));
+    }
+
+    @Test
+    public void testTwiceAWeek() throws Exception {
+        Assert.assertEquals("At 9:46 AM, only on Monday and Tuesday", CronExpressionDescriptor.getDescription("46 9 * * 1,2"));
+        Assert.assertEquals("At 9:46 AM, only on Sunday and Saturday", CronExpressionDescriptor.getDescription("46 9 * * 0,6"));
+        Assert.assertEquals("At 9:46 AM, only on Saturday and Sunday", CronExpressionDescriptor.getDescription("46 9 * * 6,7"));
+    }
+
+    @Test
+    public void testTwiceAWeekNonZeroBased() throws Exception {
+        Options options = new Options();
+        options.setZeroBasedDayOfWeek(false);
+        Assert.assertEquals("At 9:46 AM, only on Sunday and Monday", CronExpressionDescriptor.getDescription("46 9 * * 1,2", options));
+        Assert.assertEquals("At 9:46 AM, only on Friday and Saturday", CronExpressionDescriptor.getDescription("46 9 * * 6,7", options));
     }
 
     @Test
@@ -122,16 +140,20 @@ public class CronExpressionDescriptorTest {
     @Test
     public void testDayOfWeekRange() throws Exception {
         Assert.assertEquals("Every 5 minutes, at 3:00 PM, Monday through Friday", CronExpressionDescriptor.getDescription("*/5 15 * * MON-FRI"));
+        Assert.assertEquals("Every 5 minutes, at 3:00 PM, Sunday through Saturday", CronExpressionDescriptor.getDescription("*/5 15 * * 0-6"));
+        Assert.assertEquals("Every 5 minutes, at 3:00 PM, Saturday through Sunday", CronExpressionDescriptor.getDescription("*/5 15 * * 6-7"));
     }
 
     @Test
     public void testDayOfWeekOnceInMonth() throws Exception {
         Assert.assertEquals("Every minute, on the third Monday of the month", CronExpressionDescriptor.getDescription("* * * * MON#3"));
+        Assert.assertEquals("Every minute, on the third Sunday of the month", CronExpressionDescriptor.getDescription("* * * * 0#3"));
     }
 
     @Test
     public void testLastDayOfTheWeekOfTheMonth() throws Exception {
         Assert.assertEquals("Every minute, on the last Thursday of the month", CronExpressionDescriptor.getDescription("* * * * 4L"));
+        Assert.assertEquals("Every minute, on the last Sunday of the month", CronExpressionDescriptor.getDescription("* * * * 0L"));
     }
 
     @Test
@@ -229,6 +251,17 @@ public class CronExpressionDescriptorTest {
     @Test
     public void testYearRange3() throws Exception {
         Assert.assertEquals("At 12:23 PM, January through March, 2013 through 2015", CronExpressionDescriptor.getDescription("23 12 * JAN-MAR * 2013-2015"));
+    }
+
+    @Test
+    public void testIssue26() throws Exception {
+        Assert.assertEquals("At 05 and 10 minutes past the hour", CronExpressionDescriptor.getDescription("5,10 0 * * *"));
+        Assert.assertEquals("At 05 and 10 minutes past the hour, on day 2 of the month", CronExpressionDescriptor.getDescription("5,10 0 2 * *"));
+        Assert.assertEquals("Every 10 minutes, on day 2 of the month", CronExpressionDescriptor.getDescription("5/10 0 2 * *"));
+
+        Assert.assertEquals("At 5 and 6 seconds past the minute", CronExpressionDescriptor.getDescription("5,6 0 0 * * *"));
+        Assert.assertEquals("At 5 and 6 seconds past the minute, at 1:00 AM", CronExpressionDescriptor.getDescription("5,6 0 1 * * *"));
+        Assert.assertEquals("At 5 and 6 seconds past the minute, on day 2 of the month", CronExpressionDescriptor.getDescription("5,6 0 0 2 * *"));
     }
 
 }

@@ -56,7 +56,7 @@ public class CronExpressionDescriptor {
         String[] expressionParts;
         String description = "";
         try {
-            expressionParts = ExpressionParser.parse(expression);
+            expressionParts = ExpressionParser.parse(expression, options);
             switch (type) {
                 case FULL:
                     description = getFullDescription(expressionParts, options);
@@ -210,11 +210,11 @@ public class CronExpressionDescriptor {
             String minutesDescription = getMinutesDescription(expressionParts);
             String hoursDescription = getHoursDescription(expressionParts);
             description.append(secondsDescription);
-            if (description.length() > 0) {
+            if (description.length() > 0 && StringUtils.isNotEmpty(minutesDescription)) {
                 description.append(", ");
             }
             description.append(minutesDescription);
-            if (description.length() > 0) {
+            if (description.length() > 0 && StringUtils.isNotEmpty(hoursDescription)) {
                 description.append(", ");
             }
             description.append(hoursDescription);

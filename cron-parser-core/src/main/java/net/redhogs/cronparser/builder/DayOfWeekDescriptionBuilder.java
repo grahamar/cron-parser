@@ -41,8 +41,10 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
         }
         if (StringUtils.isNumeric(exp)) {
             int dayOfWeekNum = Integer.parseInt(exp);
-            if(options != null && !options.isZeroBasedDayOfWeek() && dayOfWeekNum <= 1) {
-                dayOfWeekNum = 7;
+            boolean isZeroBasedDayOfWeek = (options == null || options.isZeroBasedDayOfWeek());
+            boolean isInvalidDayOfWeekForSetting = (options != null && !options.isZeroBasedDayOfWeek() && dayOfWeekNum <= 1);
+            if(isInvalidDayOfWeekForSetting || (isZeroBasedDayOfWeek && dayOfWeekNum == 0)) {
+                return DateAndTimeUtils.getDayOfWeekName(7);
             } else if(options != null && !options.isZeroBasedDayOfWeek()) {
                 dayOfWeekNum -= 1;
             }
