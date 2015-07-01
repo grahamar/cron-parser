@@ -32,6 +32,7 @@ public final class I18nMessages {
     }
 
     static class UTF8Control extends ResourceBundle.Control {
+        @Override
         public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
             // The below is a copy of the default implementation.
             String bundleName = toBundleName(baseName, locale);
@@ -62,4 +63,7 @@ public final class I18nMessages {
         }
     }
 
+    public static boolean is24HourFormat() {
+        return Locale.GERMAN.equals(I18nMessages.getCurrentLocale());
+    }
 }
