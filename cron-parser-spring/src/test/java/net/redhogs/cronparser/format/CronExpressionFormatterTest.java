@@ -30,6 +30,7 @@ public class CronExpressionFormatterTest {
 
   @Test
   public void testConversionService() throws Exception {
+    Locale.setDefault(Locale.US);
     Set<Object> formatters = new HashSet<Object>();
     CronExpressionFormatter p = new CronExpressionFormatter();
     formatters.add(p);
