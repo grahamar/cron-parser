@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 public final class I18nMessages {
 
-    public static final Locale DEFAULT_LOCALE = Locale.UK;
+    public static final Locale DEFAULT_LOCALE = Locale.US;
     private static final String BUNDLE = "CronParserI18N";
     private static Locale currentLocale = DEFAULT_LOCALE;
     private static ResourceBundle messages = ResourceBundle.getBundle(BUNDLE, currentLocale, new UTF8Control());
