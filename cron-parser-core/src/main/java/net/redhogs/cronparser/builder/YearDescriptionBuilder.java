@@ -36,6 +36,6 @@ public class YearDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return ", "+I18nMessages.get("only_in");
+        return ", "+I18nMessages.get("only_in_year");
     }
 }

@@ -1,9 +1,9 @@
 package net.redhogs.cronparser;
 
+import java.text.MessageFormat;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-
-import java.text.MessageFormat;
 
 /**
  * @author grhodes
@@ -31,16 +31,20 @@ public final class DateAndTimeUtils {
      */
     public static String formatTime(String hoursExpression, String minutesExpression, String secondsExpression) {
         int hour = Integer.parseInt(hoursExpression);
-        String amPM = hour >= 12 ? I18nMessages.get("time_pm") : I18nMessages.get("time_am");
-        if (hour > 12) {
-            hour -= 12;
+        String amPM = "";
+        if (!I18nMessages.is24HourFormat()) {
+            amPM = hour >= 12 ? I18nMessages.get("time_pm") : I18nMessages.get("time_am");
+            if (hour > 12) {
+                hour -= 12;
+            }
         }
         String minute = String.valueOf(Integer.parseInt(minutesExpression));
         String second = "";
         if (!StringUtils.isEmpty(secondsExpression)) {
             second = ":" + StringUtils.leftPad(String.valueOf(Integer.parseInt(secondsExpression)), 2, '0');
         }
-        return MessageFormat.format("{0}:{1}{2} {3}", String.valueOf(hour), StringUtils.leftPad(minute, 2, '0'), second, amPM);
+        return MessageFormat.format("{0}:{1}{2}" + ("".equals(amPM) ? "" : " ") + "{3}",
+                String.valueOf(hour), StringUtils.leftPad(minute, 2, '0'), second, amPM);
     }
 
     public static String getDayOfWeekName(int dayOfWeek) {
