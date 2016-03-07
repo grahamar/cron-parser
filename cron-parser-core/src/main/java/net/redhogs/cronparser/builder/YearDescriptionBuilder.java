@@ -12,12 +12,6 @@ import org.joda.time.DateTime;
  */
 public class YearDescriptionBuilder extends AbstractDescriptionBuilder {
 
-    private final Options options;
-
-    public YearDescriptionBuilder(Options options) {
-        this.options = options;
-    }
-
     @Override
     protected String getSingleItemDescription(String expression) {
         return new DateTime().withYear(Integer.parseInt(expression)).toString("yyyy", I18nMessages.getCurrentLocale());

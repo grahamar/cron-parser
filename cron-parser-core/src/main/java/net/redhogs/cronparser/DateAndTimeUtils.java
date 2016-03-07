@@ -2,6 +2,9 @@ package net.redhogs.cronparser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.text.MessageFormat;
 
@@ -19,8 +22,8 @@ public final class DateAndTimeUtils {
      * @param minutesExpression
      * @return
      */
-    public static String formatTime(String hoursExpression, String minutesExpression) {
-        return formatTime(hoursExpression, minutesExpression, "");
+    public static String formatTime(String hoursExpression, String minutesExpression, Options opts) {
+        return formatTime(hoursExpression, minutesExpression, "", opts);
     }
 
     /**
@@ -29,18 +32,33 @@ public final class DateAndTimeUtils {
      * @param secondsExpression
      * @return
      */
-    public static String formatTime(String hoursExpression, String minutesExpression, String secondsExpression) {
+    public static String formatTime(String hoursExpression, String minutesExpression, String secondsExpression, Options opts) {
         int hour = Integer.parseInt(hoursExpression);
-        String amPM = hour >= 12 ? I18nMessages.get("time_pm") : I18nMessages.get("time_am");
-        if (hour > 12) {
-            hour -= 12;
+        int minutes = Integer.parseInt(minutesExpression);
+
+        LocalTime localTime;
+        DateTimeFormatter timeFormat;
+
+        if(opts.isTwentyFourHourTime()) {
+            if (!StringUtils.isEmpty(secondsExpression)) {
+                final int seconds = Integer.parseInt(secondsExpression);
+                localTime = new LocalTime(hour, minutes, seconds);
+                timeFormat = DateTimeFormat.mediumTime();
+            } else {
+                localTime = new LocalTime(hour, minutes);
+                timeFormat = DateTimeFormat.shortTime();
+            }
+        } else {
+            if (!StringUtils.isEmpty(secondsExpression)) {
+                final int seconds = Integer.parseInt(secondsExpression);
+                localTime = new LocalTime(hour, minutes, seconds);
+                timeFormat = DateTimeFormat.forPattern("h:mm:ss a");
+            } else {
+                localTime = new LocalTime(hour, minutes);
+                timeFormat = DateTimeFormat.forPattern("h:mm a");
+            }
         }
-        String minute = String.valueOf(Integer.parseInt(minutesExpression));
-        String second = "";
-        if (!StringUtils.isEmpty(secondsExpression)) {
-            second = ":" + StringUtils.leftPad(String.valueOf(Integer.parseInt(secondsExpression)), 2, '0');
-        }
-        return MessageFormat.format("{0}:{1}{2} {3}", String.valueOf(hour), StringUtils.leftPad(minute, 2, '0'), second, amPM);
+        return localTime.toString(timeFormat.withLocale(I18nMessages.getCurrentLocale()));
     }
 
     public static String getDayOfWeekName(int dayOfWeek) {

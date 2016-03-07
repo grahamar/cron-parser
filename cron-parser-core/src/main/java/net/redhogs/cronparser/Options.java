@@ -10,6 +10,7 @@ public class Options {
     private CasingTypeEnum casingType;
     private boolean verbose;
     private boolean zeroBasedDayOfWeek;
+    private boolean twentyFourHourTime;
 
     public Options() {
         this.throwExceptionOnParseError = true;
@@ -17,6 +18,13 @@ public class Options {
         this.verbose = false;
         // By default CRON expressions are zero-based
         this.zeroBasedDayOfWeek = true;
+        this.twentyFourHourTime = false;
+    }
+
+    public static Options twentyFourHour() {
+        Options opts = new Options();
+        opts.setTwentyFourHourTime(true);
+        return opts;
     }
 
     /**
@@ -89,6 +97,20 @@ public class Options {
      */
     public boolean isZeroBasedDayOfWeek() {
         return zeroBasedDayOfWeek;
+    }
+
+    /**
+     * @return the twentyFourHourTime
+     */
+    public boolean isTwentyFourHourTime() {
+        return twentyFourHourTime;
+    }
+
+    /**
+     * @param twentyFourHourTime the twentyFourHourTime to set
+     */
+    public void setTwentyFourHourTime(boolean twentyFourHourTime) {
+        this.twentyFourHourTime = twentyFourHourTime;
     }
 
 }

@@ -62,10 +62,10 @@ public class CronExpressionDescriptor {
                     description = getFullDescription(expressionParts, options);
                     break;
                 case TIMEOFDAY:
-                    description = getTimeOfDayDescription(expressionParts);
+                    description = getTimeOfDayDescription(expressionParts, options);
                     break;
                 case HOURS:
-                    description = getHoursDescription(expressionParts);
+                    description = getHoursDescription(expressionParts, options);
                     break;
                 case MINUTES:
                     description = getMinutesDescription(expressionParts);
@@ -83,7 +83,7 @@ public class CronExpressionDescriptor {
                     description = getDayOfWeekDescription(expressionParts, options);
                     break;
                 case YEAR:
-                    description = getYearDescription(expressionParts, options);
+                    description = getYearDescription(expressionParts);
                     break;
                 default:
                     description = getSecondsDescription(expressionParts);
@@ -105,8 +105,8 @@ public class CronExpressionDescriptor {
      * @param expressionParts
      * @return
      */
-    private static String getYearDescription(String[] expressionParts, Options options) {
-      return new YearDescriptionBuilder(options).getSegmentDescription(expressionParts[6], ", "+I18nMessages.get("every_year"));
+    private static String getYearDescription(String[] expressionParts) {
+      return new YearDescriptionBuilder().getSegmentDescription(expressionParts[6], ", "+I18nMessages.get("every_year"));
     }
 
     /**
@@ -170,33 +170,33 @@ public class CronExpressionDescriptor {
      * @param expressionParts
      * @return
      */
-    private static String getHoursDescription(String[] expressionParts) {
-        return new HoursDescriptionBuilder().getSegmentDescription(expressionParts[2], I18nMessages.get("every_hour"));
+    private static String getHoursDescription(String[] expressionParts, Options opts) {
+        return new HoursDescriptionBuilder(opts).getSegmentDescription(expressionParts[2], I18nMessages.get("every_hour"));
     }
 
     /**
      * @param expressionParts
      * @return
      */
-    private static String getTimeOfDayDescription(String[] expressionParts) {
+    private static String getTimeOfDayDescription(String[] expressionParts, Options opts) {
         String secondsExpression = expressionParts[0];
         String minutesExpression = expressionParts[1];
         String hoursExpression = expressionParts[2];
         StringBuilder description = new StringBuilder();
         // Handle special cases first
         if (!StringUtils.containsAny(minutesExpression, specialCharacters) && !StringUtils.containsAny(hoursExpression, specialCharacters) && !StringUtils.containsAny(secondsExpression, specialCharacters)) {
-            description.append(I18nMessages.get("at")).append(" ").append(DateAndTimeUtils.formatTime(hoursExpression, minutesExpression, secondsExpression)); // Specific time of day (e.g. 10 14)
+            description.append(I18nMessages.get("at")).append(" ").append(DateAndTimeUtils.formatTime(hoursExpression, minutesExpression, secondsExpression, opts)); // Specific time of day (e.g. 10 14)
         } else if (minutesExpression.contains("-") && !minutesExpression.contains("/") && !StringUtils.containsAny(hoursExpression, specialCharacters)) {
             // Minute range in single hour (e.g. 0-10 11)
             String[] minuteParts = minutesExpression.split("-");
-            description.append(MessageFormat.format(I18nMessages.get("every_minute_between"), DateAndTimeUtils.formatTime(hoursExpression, minuteParts[0]),
-                    DateAndTimeUtils.formatTime(hoursExpression, minuteParts[1])));
+            description.append(MessageFormat.format(I18nMessages.get("every_minute_between"), DateAndTimeUtils.formatTime(hoursExpression, minuteParts[0], opts),
+                    DateAndTimeUtils.formatTime(hoursExpression, minuteParts[1], opts)));
         } else if (hoursExpression.contains(",") && !StringUtils.containsAny(minutesExpression, specialCharacters)) {
             // Hours list with single minute (e.g. 30 6,14,16)
             String[] hourParts = hoursExpression.split(",");
             description.append(I18nMessages.get("at"));
             for (int i = 0; i < hourParts.length; i++) {
-                description.append(" ").append(DateAndTimeUtils.formatTime(hourParts[i], minutesExpression));
+                description.append(" ").append(DateAndTimeUtils.formatTime(hourParts[i], minutesExpression, opts));
                 if (i < hourParts.length - 2) {
                     description.append(",");
                 }
@@ -208,7 +208,7 @@ public class CronExpressionDescriptor {
         } else {
             String secondsDescription = getSecondsDescription(expressionParts);
             String minutesDescription = getMinutesDescription(expressionParts);
-            String hoursDescription = getHoursDescription(expressionParts);
+            String hoursDescription = getHoursDescription(expressionParts, opts);
             description.append(secondsDescription);
             if (description.length() > 0 && StringUtils.isNotEmpty(minutesDescription)) {
                 description.append(", ");
@@ -229,11 +229,11 @@ public class CronExpressionDescriptor {
      */
     private static String getFullDescription(String[] expressionParts, Options options) {
         String description = "";
-        String timeSegment = getTimeOfDayDescription(expressionParts);
+        String timeSegment = getTimeOfDayDescription(expressionParts, options);
         String dayOfMonthDesc = getDayOfMonthDescription(expressionParts);
         String monthDesc = getMonthDescription(expressionParts);
         String dayOfWeekDesc = getDayOfWeekDescription(expressionParts, options);
-        String yearDesc = getYearDescription(expressionParts, options);
+        String yearDesc = getYearDescription(expressionParts);
         description = MessageFormat.format("{0}{1}{2}{3}", timeSegment, ("*".equals(expressionParts[3]) ? dayOfWeekDesc : dayOfMonthDesc), monthDesc, yearDesc);
         description = transformVerbosity(description, options);
         description = transformCase(description, options);

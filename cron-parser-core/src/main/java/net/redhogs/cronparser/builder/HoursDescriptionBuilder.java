@@ -2,6 +2,7 @@ package net.redhogs.cronparser.builder;
 
 import net.redhogs.cronparser.DateAndTimeUtils;
 import net.redhogs.cronparser.I18nMessages;
+import net.redhogs.cronparser.Options;
 
 import java.text.MessageFormat;
 
@@ -11,9 +12,15 @@ import java.text.MessageFormat;
  */
 public class HoursDescriptionBuilder extends AbstractDescriptionBuilder {
 
+    private final Options options;
+
+    public HoursDescriptionBuilder(Options options) {
+        this.options = options;
+    }
+
     @Override
     protected String getSingleItemDescription(String expression) {
-        return DateAndTimeUtils.formatTime(expression, "0");
+        return DateAndTimeUtils.formatTime(expression, "0", options);
     }
 
     @Override
