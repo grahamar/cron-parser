@@ -49,8 +49,8 @@
 		<url>https://github.com/RedHogs/cron-parser</url>
 		<connection>scm:git:git@github.com:RedHogs/cron-parser.git</connection>
 		<developerConnection>scm:git:git@github.com:RedHogs/cron-parser.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+	    <tag>HEAD</tag>
+    </scm>
 
 	<distributionManagement>
 		<repository>
@@ -79,6 +79,7 @@
 
 		<github.global.server>github</github.global.server>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <additionalparam>-Xdoclint:none</additionalparam>
 	</properties>
 
     <modules>
