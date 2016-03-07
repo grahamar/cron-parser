@@ -2,8 +2,9 @@ package net.redhogs.cronparser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-
-import java.text.MessageFormat;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * @author grhodes
@@ -30,17 +31,45 @@ public final class DateAndTimeUtils {
      * @return
      */
     public static String formatTime(String hoursExpression, String minutesExpression, String secondsExpression) {
+        
         int hour = Integer.parseInt(hoursExpression);
-        String amPM = hour >= 12 ? I18nMessages.get("time_pm") : I18nMessages.get("time_am");
-        if (hour > 12) {
-            hour -= 12;
+        int minutes = Integer.parseInt(minutesExpression);
+        
+        LocalTime localTime;
+        DateTimeFormatter dateTimeFormatter;
+        
+        if (StringUtils.isNotBlank(secondsExpression)) {
+            
+            final int seconds = Integer.parseInt(secondsExpression);
+            localTime = new LocalTime(hour, minutes, seconds);
+            dateTimeFormatter = DateTimeFormat.mediumTime();
+            
         }
-        String minute = String.valueOf(Integer.parseInt(minutesExpression));
-        String second = "";
-        if (!StringUtils.isEmpty(secondsExpression)) {
-            second = ":" + StringUtils.leftPad(String.valueOf(Integer.parseInt(secondsExpression)), 2, '0');
+        else {
+            
+            localTime = new LocalTime(hour, minutes);
+            dateTimeFormatter = DateTimeFormat.shortTime();
         }
-        return MessageFormat.format("{0}:{1}{2} {3}", String.valueOf(hour), StringUtils.leftPad(minute, 2, '0'), second, amPM);
+        
+        return localTime.toString(dateTimeFormatter.withLocale(I18nMessages.getCurrentLocale()));
+                
+//        String amPM = hour >= 12 ? I18nMessages.get("time_pm") : I18nMessages.get("time_am");        
+//        if (hour > 12) {
+//            hour -= 12;
+//        }
+//        
+//        
+//        String minute = String.valueOf(minutes);
+//        String second = "";
+//        if (!StringUtils.isEmpty(secondsExpression)) {
+//            final int seconds = Integer.parseInt(secondsExpression);
+//            second = ":" + StringUtils.leftPad(String.valueOf(seconds), 2, '0');
+//        }
+//        return MessageFormat.format("{0}:{1}{2} {3}"
+//                                    , String.valueOf(hour)
+//                                    , StringUtils.leftPad(minute, 2, '0')
+//                                    , second
+//                                    , amPM);                       
     }
 
     public static String getDayOfWeekName(int dayOfWeek) {
