@@ -194,7 +194,7 @@ public class CronExpressionDescriptorROTest {
 
     @Test
     public void testBetweenWithInterval() throws Exception {
-        Assert.assertEquals("La fiecare 3 minute, între minutele 02 și 59, la 1:00 AM, 9:00 AM, și 10:00 PM, între a 11-a și a 26-a zi a lunii, din ianuarie până în iunie",
+        Assert.assertEquals("La fiecare 3 minute, între minutele 02 și 59, la 1:00 AM, 9:00 AM și 10:00 PM, între a 11-a și a 26-a zi a lunii, din ianuarie până în iunie",
                 CronExpressionDescriptor.getDescription("2-59/3 1,9,22 11-26 1-6 ?", ROMANIAN));
     }
 
@@ -213,7 +213,7 @@ public class CronExpressionDescriptorROTest {
      */
     @Test
     public void testEveryPastTheHour() throws Exception {
-        Assert.assertEquals("La 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, și 55 minute în fiecare oră", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *", ROMANIAN));
+        Assert.assertEquals("La 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50 și 55 minute în fiecare oră", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *", ROMANIAN));
     }
 
     /**

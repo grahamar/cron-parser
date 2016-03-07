@@ -203,7 +203,7 @@ public class CronExpressionDescriptorTest {
 
     @Test
     public void testBetweenWithInterval() throws Exception {
-        Assert.assertEquals("Every 3 minutes, minutes 02 through 59 past the hour, at 1:00 AM, 9:00 AM, and 10:00 PM, between day 11 and 26 of the month, January through June",
+        Assert.assertEquals("Every 3 minutes, minutes 02 through 59 past the hour, at 1:00 AM, 9:00 AM and 10:00 PM, between day 11 and 26 of the month, January through June",
                 CronExpressionDescriptor.getDescription("2-59/3 1,9,22 11-26 1-6 ?"));
     }
 
@@ -222,7 +222,7 @@ public class CronExpressionDescriptorTest {
      */
     @Test
     public void testEveryPastTheHour() throws Exception {
-        Assert.assertEquals("At 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50, and 55 minutes past the hour", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *"));
+        Assert.assertEquals("At 00, 05, 10, 15, 20, 25, 30, 35, 40, 45, 50 and 55 minutes past the hour", CronExpressionDescriptor.getDescription("0 0,5,10,15,20,25,30,35,40,45,50,55 * ? * *"));
     }
 
     /**

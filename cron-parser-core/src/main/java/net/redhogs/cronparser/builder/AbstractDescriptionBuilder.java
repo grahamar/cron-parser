@@ -39,9 +39,8 @@ public abstract class AbstractDescriptionBuilder {
             StringBuilder descriptionContent = new StringBuilder();
             for (int i = 0; i < segments.length; i++) {
                 if ((i > 0) && (segments.length > 2)) {
-                    descriptionContent.append(",");
                     if (i < (segments.length - 1)) {
-                        descriptionContent.append(" ");
+                        descriptionContent.append(", ");
                     }
                 }
                 if ((i > 0) && (segments.length > 1) && ((i == (segments.length - 1)) || (segments.length == 2))) {

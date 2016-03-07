@@ -197,7 +197,7 @@ public class CronExpressionDescriptorESTest {
 
     @Test
     public void testBetweenWithInterval() throws Exception {
-        Assert.assertEquals("Cada 3 minutos, desde 02 hasta el 59 minuto después de la hora, 1:00 AM, 9:00 AM, y 10:00 PM, entre el 11 y el 26 del mes, enero hasta junio",
+        Assert.assertEquals("Cada 3 minutos, desde 02 hasta el 59 minuto después de la hora, 1:00 AM, 9:00 AM y 10:00 PM, entre el 11 y el 26 del mes, enero hasta junio",
                 CronExpressionDescriptor.getDescription("2-59/3 1,9,22 11-26 1-6 ?", SPANISH));
     }
 
