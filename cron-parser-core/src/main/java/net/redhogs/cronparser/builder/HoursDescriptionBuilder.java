@@ -30,7 +30,7 @@ public class HoursDescriptionBuilder extends AbstractDescriptionBuilder {
     }
 
     @Override
-    protected String getBetweenDescriptionFormat(String expression) {
+    protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
         return I18nMessages.get("between_x_and_y");
     }
 

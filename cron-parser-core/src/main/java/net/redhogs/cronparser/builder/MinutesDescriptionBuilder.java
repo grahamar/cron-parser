@@ -22,7 +22,7 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
     }
 
     @Override
-    protected String getBetweenDescriptionFormat(String expression) {
+    protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
         return I18nMessages.get("minutes_through_past_the_hour");
     }
 

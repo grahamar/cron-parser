@@ -24,8 +24,9 @@ public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
     }
 
     @Override
-    protected String getBetweenDescriptionFormat(String expression) {
-        return ", "+I18nMessages.get("between_description_format");
+    protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
+    	String format = I18nMessages.get("between_description_format");
+        return omitSeparator ? format : ", "+format;
     }
 
     @Override

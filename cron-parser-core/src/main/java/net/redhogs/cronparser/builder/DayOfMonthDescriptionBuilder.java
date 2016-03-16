@@ -19,8 +19,9 @@ public class DayOfMonthDescriptionBuilder extends AbstractDescriptionBuilder {
     }
 
     @Override
-    protected String getBetweenDescriptionFormat(String expression) {
-        return ", "+I18nMessages.get("between_days_of_the_month");
+    protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
+    	String format = I18nMessages.get("between_days_of_the_month");
+        return omitSeparator ? format : ", "+format;
     }
 
     @Override

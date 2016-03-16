@@ -21,7 +21,7 @@ public class SecondsDescriptionBuilder extends AbstractDescriptionBuilder {
     }
 
     @Override
-    protected String getBetweenDescriptionFormat(String expression) {
+    protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
         return I18nMessages.get("seconds_through_past_the_minute");
     }
 
