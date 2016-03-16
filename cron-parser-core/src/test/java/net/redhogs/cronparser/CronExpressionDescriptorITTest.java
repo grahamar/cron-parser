@@ -133,6 +133,11 @@ public class CronExpressionDescriptorITTest {
     }
 
     @Test
+    public void testMonthNameRanges() throws Exception {
+        Assert.assertEquals("Alle 3:00 AM, solo in gennaio fino a marzo e maggio fino a giugno", CronExpressionDescriptor.getDescription("0 0 3 * 1-3,5-6 *", ITALIAN));
+    }
+
+    @Test
     public void testDayOfWeekName() throws Exception {
         Assert.assertEquals("Alle 12:23 PM, solo di domenica", CronExpressionDescriptor.getDescription("23 12 * * SUN", ITALIAN));
     }
@@ -142,6 +147,11 @@ public class CronExpressionDescriptorITTest {
         Assert.assertEquals("Ogni 5 minuti, 3:00 PM, lunedì fino a venerdì", CronExpressionDescriptor.getDescription("*/5 15 * * MON-FRI", ITALIAN));
         Assert.assertEquals("Ogni 5 minuti, 3:00 PM, domenica fino a sabato", CronExpressionDescriptor.getDescription("*/5 15 * * 0-6", ITALIAN));
         Assert.assertEquals("Ogni 5 minuti, 3:00 PM, sabato fino a domenica", CronExpressionDescriptor.getDescription("*/5 15 * * 6-7", ITALIAN));
+    }
+
+    @Test
+    public void testDayOfWeekRanges() throws Exception {
+        Assert.assertEquals("Alle 3:00 AM, solo di domenica, martedì fino a giovedì e sabato", CronExpressionDescriptor.getDescription("0 0 3 * * 0,2-4,6", ITALIAN));
     }
 
     @Test
