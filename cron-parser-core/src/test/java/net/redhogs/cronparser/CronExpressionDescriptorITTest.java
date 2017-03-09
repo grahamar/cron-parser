@@ -243,13 +243,13 @@ public class CronExpressionDescriptorITTest {
 
     @Test
     public void testIssue26() throws Exception {
-        Assert.assertEquals("05 e 10 minuti dopo l'ora", CronExpressionDescriptor.getDescription("5,10 0 * * *", ITALIAN));
-        Assert.assertEquals("05 e 10 minuti dopo l'ora, nel 2 giorno del mese", CronExpressionDescriptor.getDescription("5,10 0 2 * *", ITALIAN));
-        Assert.assertEquals("Ogni 10 minuti, nel 2 giorno del mese", CronExpressionDescriptor.getDescription("5/10 0 2 * *", ITALIAN));
+        Assert.assertEquals("05 e 10 minuti dopo l'ora", CronExpressionDescriptor.getDescription("5,10 * * * *", ITALIAN));
+        Assert.assertEquals("05 e 10 minuti dopo l'ora, nel 2 giorno del mese", CronExpressionDescriptor.getDescription("5,10 * 2 * *", ITALIAN));
+        Assert.assertEquals("Ogni 10 minuti, nel 2 giorno del mese", CronExpressionDescriptor.getDescription("5/10 * 2 * *", ITALIAN));
 
-        Assert.assertEquals("5 e 6 secondi dopo il minuto", CronExpressionDescriptor.getDescription("5,6 0 0 * * *", ITALIAN));
-        Assert.assertEquals("5 e 6 secondi dopo il minuto, 1:00 AM", CronExpressionDescriptor.getDescription("5,6 0 1 * * *", ITALIAN));
-        Assert.assertEquals("5 e 6 secondi dopo il minuto, nel 2 giorno del mese", CronExpressionDescriptor.getDescription("5,6 0 0 2 * *", ITALIAN));
+        Assert.assertEquals("5 e 6 secondi dopo il minuto", CronExpressionDescriptor.getDescription("5,6 * * * * *", ITALIAN));
+        Assert.assertEquals("5 e 6 secondi dopo il minuto, 1:00 AM", CronExpressionDescriptor.getDescription("5,6 * 1 * * *", ITALIAN));
+        Assert.assertEquals("5 e 6 secondi dopo il minuto, nel 2 giorno del mese", CronExpressionDescriptor.getDescription("5,6 * * 2 * *", ITALIAN));
     }
 
 }

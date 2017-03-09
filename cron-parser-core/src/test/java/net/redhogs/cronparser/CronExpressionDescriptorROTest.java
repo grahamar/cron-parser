@@ -254,13 +254,13 @@ public class CronExpressionDescriptorROTest {
 
     @Test
     public void testIssue26() throws Exception {
-        Assert.assertEquals("La 05 și 10 minute în fiecare oră", CronExpressionDescriptor.getDescription("5,10 0 * * *", ROMANIAN));
-        Assert.assertEquals("La 05 și 10 minute în fiecare oră, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5,10 0 2 * *", ROMANIAN));
-        Assert.assertEquals("La fiecare 10 minute, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5/10 0 2 * *", ROMANIAN));
+        Assert.assertEquals("La 05 și 10 minute în fiecare oră", CronExpressionDescriptor.getDescription("5,10 * * * *", ROMANIAN));
+        Assert.assertEquals("La 05 și 10 minute în fiecare oră, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5,10 * 2 * *", ROMANIAN));
+        Assert.assertEquals("La fiecare 10 minute, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5/10 * 2 * *", ROMANIAN));
 
-        Assert.assertEquals("La secunda 5 și 6", CronExpressionDescriptor.getDescription("5,6 0 0 * * *", ROMANIAN));
-        Assert.assertEquals("La secunda 5 și 6, la 1:00 AM", CronExpressionDescriptor.getDescription("5,6 0 1 * * *", ROMANIAN));
-        Assert.assertEquals("La secunda 5 și 6, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5,6 0 0 2 * *", ROMANIAN));
+        Assert.assertEquals("La secunda 5 și 6", CronExpressionDescriptor.getDescription("5,6 * * * * *", ROMANIAN));
+        Assert.assertEquals("La secunda 5 și 6, la 1:00 AM", CronExpressionDescriptor.getDescription("5,6 * 1 * * *", ROMANIAN));
+        Assert.assertEquals("La secunda 5 și 6, în a 2-a zi a lunii", CronExpressionDescriptor.getDescription("5,6 * * 2 * *", ROMANIAN));
     }
 
 }
