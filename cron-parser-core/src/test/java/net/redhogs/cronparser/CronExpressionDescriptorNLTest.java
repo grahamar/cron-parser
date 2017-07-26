@@ -47,6 +47,8 @@ public class CronExpressionDescriptorNLTest {
     @Test
     public void testDailyAtTime() throws Exception {
         Assert.assertEquals("Om 11:30 AM", CronExpressionDescriptor.getDescription("30 11 * * *", DUTCH));
+        Assert.assertEquals("Om 11:40 AM", CronExpressionDescriptor.getDescription("0 40 11 1/1 * ? *", DUTCH));
+        Assert.assertEquals("Om 11:40 AM", CronExpressionDescriptor.getDescription("0 40 11 * * ? *", DUTCH));
     }
 
     @Test

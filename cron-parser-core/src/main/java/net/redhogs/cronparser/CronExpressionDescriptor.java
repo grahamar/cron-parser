@@ -271,9 +271,10 @@ public class CronExpressionDescriptor {
             descTemp = descTemp.replace(I18nMessages.get("every_1_minute"), I18nMessages.get("every_minute"));
             descTemp = descTemp.replace(I18nMessages.get("every_1_hour"), I18nMessages.get("every_hour"));
             descTemp = descTemp.replace(I18nMessages.get("every_1_day"), I18nMessages.get("every_day"));
-            descTemp = descTemp.replace(", "+I18nMessages.get("every_minute"), "");
-            descTemp = descTemp.replace(", "+I18nMessages.get("every_hour"), "");
-            descTemp = descTemp.replace(", "+I18nMessages.get("every_day"), "");
+            descTemp = descTemp.replace(", "+ I18nMessages.get("every_minute"), "");
+            descTemp = descTemp.replace(", "+ I18nMessages.get("every_hour"), "");
+            descTemp = descTemp.replace(", "+ I18nMessages.get("every_day"), "");
+            descTemp = descTemp.replace(", " + I18nMessages.get("every_year"), "");
         }
         return descTemp;
     }
