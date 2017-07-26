@@ -145,15 +145,25 @@ public class CronExpressionDescriptorPTTest {
   }
 
   @Test
+  public void testMonthNameRanges() throws Exception {
+    Assert.assertEquals("Às 3:00 AM, em Janeiro até Março e Maio até Junho", CronExpressionDescriptor.getDescription("0 0 3 * 1-3,5-6 *", PORTUGUESE));
+  }
+
+  @Test
   public void testDaeOfWeekName() throws Exception {
     Assert.assertEquals("Às 12:23, somente Domingo", CronExpressionDescriptor.getDescription("23 12 * * SUN", Options.twentyFourHour(), PORTUGUESE));
   }
 
   @Test
-  public void testDaeOfWeekRange() throws Exception {
+  public void testDayOfWeekRange() throws Exception {
     Assert.assertEquals("A cada 5 minutos, 15:00, Segunda-feira até Sexta-feira", CronExpressionDescriptor.getDescription("*/5 15 * * MON-FRI", Options.twentyFourHour(), PORTUGUESE));
     Assert.assertEquals("A cada 5 minutos, 15:00, Domingo até Sábado", CronExpressionDescriptor.getDescription("*/5 15 * * 0-6", Options.twentyFourHour(), PORTUGUESE));
     Assert.assertEquals("A cada 5 minutos, 15:00, Sábado até Domingo", CronExpressionDescriptor.getDescription("*/5 15 * * 6-7", Options.twentyFourHour(), PORTUGUESE));
+  }
+
+  @Test
+  public void testDayOfWeekRanges() throws Exception {
+    Assert.assertEquals("Às 3:00 AM, somente Domingo, Terça-feira até Quinta-feira e Sábado", CronExpressionDescriptor.getDescription("0 0 3 * * 0,2-4,6", PORTUGUESE));
   }
 
   @Test

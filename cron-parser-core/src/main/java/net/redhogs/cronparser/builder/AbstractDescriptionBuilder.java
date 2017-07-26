@@ -29,11 +29,8 @@ public abstract class AbstractDescriptionBuilder {
             if (segments[0].contains("-")) {
                 String betweenSegmentOfInterval = segments[0];
                 String[] betweenSegments = betweenSegmentOfInterval.split("-");
-                description += ", " + MessageFormat.format(getBetweenDescriptionFormat(betweenSegmentOfInterval), getSingleItemDescription(betweenSegments[0]), getSingleItemDescription(betweenSegments[1]));
+                description += ", " + MessageFormat.format(getBetweenDescriptionFormat(betweenSegmentOfInterval, false), getSingleItemDescription(betweenSegments[0]), getSingleItemDescription(betweenSegments[1]));
             }
-        } else if (expression.contains("-")) {
-            String[] segments = expression.split("-");
-            description = MessageFormat.format(getBetweenDescriptionFormat(expression), getSingleItemDescription(segments[0]), getSingleItemDescription(segments[1]));
         } else if (expression.contains(",")) {
             String[] segments = expression.split(",");
             StringBuilder descriptionContent = new StringBuilder();
@@ -48,9 +45,17 @@ public abstract class AbstractDescriptionBuilder {
                     descriptionContent.append(I18nMessages.get("and"));
                     descriptionContent.append(" ");
                 }
-                descriptionContent.append(getSingleItemDescription(segments[i]));
+                if (segments[i].contains("-")) {
+                    String[] betweenSegments = segments[i].split("-");
+                    descriptionContent.append(MessageFormat.format(getBetweenDescriptionFormat(expression, true), getSingleItemDescription(betweenSegments[0]), getSingleItemDescription(betweenSegments[1])));
+                } else {
+                    descriptionContent.append(getSingleItemDescription(segments[i]));
+                }
             }
             description = MessageFormat.format(getDescriptionFormat(expression), descriptionContent.toString());
+        } else if (expression.contains("-")) {
+            String[] segments = expression.split("-");
+            description = MessageFormat.format(getBetweenDescriptionFormat(expression, false), getSingleItemDescription(segments[0]), getSingleItemDescription(segments[1]));
         }
         return description;
     }
@@ -59,7 +64,7 @@ public abstract class AbstractDescriptionBuilder {
      * @param expression
      * @return
      */
-    protected abstract String getBetweenDescriptionFormat(String expression);
+    protected abstract String getBetweenDescriptionFormat(String expression, boolean omitSeparator);
 
     /**
      * @param expression

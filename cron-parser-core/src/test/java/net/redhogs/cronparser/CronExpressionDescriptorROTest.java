@@ -132,6 +132,11 @@ public class CronExpressionDescriptorROTest {
     }
 
     @Test
+    public void testMonthNameRanges() throws Exception {
+        Assert.assertEquals("La 3:00 AM, numai în din ianuarie până în martie și din mai până în iunie", CronExpressionDescriptor.getDescription("0 0 3 * 1-3,5-6 *", ROMANIAN));
+    }
+
+    @Test
     public void testDayOfWeekName() throws Exception {
         Assert.assertEquals("La 12:23 PM, numai duminică", CronExpressionDescriptor.getDescription("23 12 * * SUN", ROMANIAN));
     }
@@ -141,6 +146,11 @@ public class CronExpressionDescriptorROTest {
         Assert.assertEquals("La fiecare 5 minute, la 3:00 PM, de luni până vineri", CronExpressionDescriptor.getDescription("*/5 15 * * MON-FRI", ROMANIAN));
         Assert.assertEquals("La fiecare 5 minute, la 3:00 PM, de duminică până sâmbătă", CronExpressionDescriptor.getDescription("*/5 15 * * 0-6", ROMANIAN));
         Assert.assertEquals("La fiecare 5 minute, la 3:00 PM, de sâmbătă până duminică", CronExpressionDescriptor.getDescription("*/5 15 * * 6-7", ROMANIAN));
+    }
+
+    @Test
+    public void testDayOfWeekRanges() throws Exception {
+        Assert.assertEquals("La 3:00 AM, numai duminică, de marţi până joi și sâmbătă", CronExpressionDescriptor.getDescription("0 0 3 * * 0,2-4,6", ROMANIAN));
     }
 
     @Test

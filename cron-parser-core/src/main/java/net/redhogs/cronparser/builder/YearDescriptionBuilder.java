@@ -3,7 +3,6 @@ package net.redhogs.cronparser.builder;
 import java.text.MessageFormat;
 
 import net.redhogs.cronparser.I18nMessages;
-import net.redhogs.cronparser.Options;
 import org.joda.time.DateTime;
 
 /**
@@ -24,8 +23,9 @@ public class YearDescriptionBuilder extends AbstractDescriptionBuilder {
     }
 
     @Override
-    protected String getBetweenDescriptionFormat(String expression) {
-        return ", "+I18nMessages.get("between_description_format");
+    protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
+    	String format = I18nMessages.get("between_description_format");
+    	return omitSeparator ? format : ", "+format;
     }
 
     @Override
