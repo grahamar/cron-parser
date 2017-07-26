@@ -4,7 +4,7 @@
     <parent>
         <groupId>net.redhogs.cronparser</groupId>
         <artifactId>cron-parser</artifactId>
-        <version>2.11-SNAPSHOT</version>
+        <version>3.0</version>
     </parent>
 
     <artifactId>cron-parser-core</artifactId>
