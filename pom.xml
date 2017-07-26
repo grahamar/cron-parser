@@ -219,6 +219,15 @@
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>2.1</version>
                 </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.6</version>
+                  <configuration>
+                    <executable>gpg2</executable>
+                    <keyname>D9826605</keyname>
+                  </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 		<extensions>
@@ -245,10 +254,6 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
-            <configuration>
-              <executable>gpg2</executable>
-            </configuration>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
