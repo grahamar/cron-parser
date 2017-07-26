@@ -1,8 +1,8 @@
 cron-parser
 ===========
 
-[![Join the chat at https://gitter.im/RedHogs/cron-parser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/RedHogs/cron-parser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/RedHogs/cron-parser.png?branch=master)](https://travis-ci.org/RedHogs/cron-parser) [![Stories in Ready](https://badge.waffle.io/RedHogs/cron-parser.png?label=ready)](https://waffle.io/RedHogs/cron-parser) 
+[![Join the chat at https://gitter.im/grahamar/cron-parser](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/grahamar/cron-parser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/grahamar/cron-parser.png?branch=master)](https://travis-ci.org/grahamar/cron-parser) [![Stories in Ready](https://badge.waffle.io/grahamar/cron-parser.png?label=ready)](https://waffle.io/grahamar/cron-parser)
 
 A Java library that converts cron expressions into human readable strings.
 Translated to Java from https://github.com/bradyholt/cron-expression-descriptor.
