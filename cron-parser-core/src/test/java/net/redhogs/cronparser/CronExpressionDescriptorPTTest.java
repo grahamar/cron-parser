@@ -255,13 +255,13 @@ public class CronExpressionDescriptorPTTest {
 
   @Test
   public void testIssue26() throws Exception {
-    Assert.assertEquals("05 e 10 minutos hora depois", CronExpressionDescriptor.getDescription("5,10 0 * * *", Options.twentyFourHour(), PORTUGUESE));
-    Assert.assertEquals("05 e 10 minutos hora depois, no(s) dia(s) 2 do mês", CronExpressionDescriptor.getDescription("5,10 0 2 * *", Options.twentyFourHour(), PORTUGUESE));
-    Assert.assertEquals("A cada 10 minutos, no(s) dia(s) 2 do mês", CronExpressionDescriptor.getDescription("5/10 0 2 * *", Options.twentyFourHour(), PORTUGUESE));
+    Assert.assertEquals("05 e 10 minutos hora depois", CronExpressionDescriptor.getDescription("5,10 * * * *", Options.twentyFourHour(), PORTUGUESE));
+    Assert.assertEquals("05 e 10 minutos hora depois, no(s) dia(s) 2 do mês", CronExpressionDescriptor.getDescription("5,10 * 2 * *", Options.twentyFourHour(), PORTUGUESE));
+    Assert.assertEquals("A cada 10 minutos, no(s) dia(s) 2 do mês", CronExpressionDescriptor.getDescription("5/10 * 2 * *", Options.twentyFourHour(), PORTUGUESE));
 
-    Assert.assertEquals("5 e 6 segundos depois do minuto", CronExpressionDescriptor.getDescription("5,6 0 0 * * *", Options.twentyFourHour(), PORTUGUESE));
-    Assert.assertEquals("5 e 6 segundos depois do minuto, 01:00", CronExpressionDescriptor.getDescription("5,6 0 1 * * *", Options.twentyFourHour(), PORTUGUESE));
-    Assert.assertEquals("5 e 6 segundos depois do minuto, no(s) dia(s) 2 do mês", CronExpressionDescriptor.getDescription("5,6 0 0 2 * *", Options.twentyFourHour(), PORTUGUESE));
+    Assert.assertEquals("5 e 6 segundos depois do minuto", CronExpressionDescriptor.getDescription("5,6 * * * * *", Options.twentyFourHour(), PORTUGUESE));
+    Assert.assertEquals("5 e 6 segundos depois do minuto, 01:00", CronExpressionDescriptor.getDescription("5,6 * 1 * * *", Options.twentyFourHour(), PORTUGUESE));
+    Assert.assertEquals("5 e 6 segundos depois do minuto, no(s) dia(s) 2 do mês", CronExpressionDescriptor.getDescription("5,6 * * 2 * *", Options.twentyFourHour(), PORTUGUESE));
   }
 
 }

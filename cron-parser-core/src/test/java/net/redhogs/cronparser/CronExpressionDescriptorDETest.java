@@ -17,12 +17,15 @@ public class CronExpressionDescriptorDETest {
   public void testEverySecond() throws Exception {
     Assert.assertEquals("Jede Sekunde",
         CronExpressionDescriptor.getDescription("* * * * * *", GERMAN));
+    Assert.assertEquals("Jede Sekunde", CronExpressionDescriptor.getDescription("* * * * * *", Options.twentyFourHour(), GERMAN));
   }
 
   @Test
   public void testEvery45Seconds() throws Exception {
     Assert.assertEquals("Alle 45 Sekunden",
         CronExpressionDescriptor.getDescription("*/45 * * * * *", GERMAN));
+    Assert.assertEquals("Alle 45 Sekunden",
+            CronExpressionDescriptor.getDescription("*/45 * * * * *", Options.twentyFourHour(), GERMAN));
   }
 
   @Test
@@ -323,18 +326,27 @@ public class CronExpressionDescriptorDETest {
   @Test
   public void testIssue26() throws Exception {
     Assert.assertEquals("Um 05 und 10 Minuten nach der vollen Stunde",
-        CronExpressionDescriptor.getDescription("5,10 0 * * *", GERMAN));
+        CronExpressionDescriptor.getDescription("5,10 * * * *", GERMAN));
+    Assert.assertEquals("Um 05 und 10 Minuten nach der vollen Stunde, um 12:00 AM",
+              CronExpressionDescriptor.getDescription("5,10 0 * * *", GERMAN));
     Assert.assertEquals("Um 05 und 10 Minuten nach der vollen Stunde, am 2. des Monats",
-        CronExpressionDescriptor.getDescription("5,10 0 2 * *", GERMAN));
+        CronExpressionDescriptor.getDescription("5,10 * 2 * *", GERMAN));
+      Assert.assertEquals("Um 05 und 10 Minuten nach der vollen Stunde, um 12:00 AM, am 2. des Monats",
+              CronExpressionDescriptor.getDescription("5,10 0 2 * *", GERMAN));
     Assert.assertEquals("Alle 10 Minuten, am 2. des Monats",
-        CronExpressionDescriptor.getDescription("5/10 0 2 * *", GERMAN));
-
+        CronExpressionDescriptor.getDescription("5/10 * 2 * *", GERMAN));
+      Assert.assertEquals("Alle 10 Minuten, um 12:00 AM, am 2. des Monats",
+              CronExpressionDescriptor.getDescription("5/10 0 2 * *", GERMAN));
     Assert.assertEquals("Um 5 und 6 Sekunden nach der vollen Minute",
-        CronExpressionDescriptor.getDescription("5,6 0 0 * * *", GERMAN));
+        CronExpressionDescriptor.getDescription("5,6 * * * * *", GERMAN));
+    Assert.assertEquals("Um 5 und 6 Sekunden nach der vollen Minute, um 12:00 AM",
+              CronExpressionDescriptor.getDescription("5,6 0 0 * * *", GERMAN));
     Assert.assertEquals("Um 5 und 6 Sekunden nach der vollen Minute, um 1:00 AM",
         CronExpressionDescriptor.getDescription("5,6 0 1 * * *", GERMAN));
     Assert.assertEquals("Um 5 und 6 Sekunden nach der vollen Minute, am 2. des Monats",
-        CronExpressionDescriptor.getDescription("5,6 0 0 2 * *", GERMAN));
+        CronExpressionDescriptor.getDescription("5,6 0 * 2 * *", GERMAN));
+      Assert.assertEquals("Um 5 und 6 Sekunden nach der vollen Minute, um 12:00 AM, am 2. des Monats",
+              CronExpressionDescriptor.getDescription("5,6 0 0 2 * *", GERMAN));
   }
 
 }

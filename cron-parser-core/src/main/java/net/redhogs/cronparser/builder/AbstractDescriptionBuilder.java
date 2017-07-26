@@ -16,7 +16,7 @@ public abstract class AbstractDescriptionBuilder {
 
     public String getSegmentDescription(String expression, String allDescription) {
         String description = "";
-        if (StringUtils.isEmpty(expression) || "0".equals(expression)) {
+        if (StringUtils.isEmpty(expression)) {
             description = "";
         } else if ("*".equals(expression)) {
             description = allDescription;
