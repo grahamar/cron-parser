@@ -16,7 +16,7 @@ License: MIT
  * Supports 5, 6 (w/ seconds or year), or 7 (w/ seconds and year) part cron expressions.
  * Provides casing options (Sentence, Title, Lower, etc.).
  * Support for non-standard non-zero-based week day numbers.
- * Supports printing to locale specific human readable format (Italian, English, Spanish, Romanian, Dutch and French so far...).
+ * Supports printing to locale specific human readable format (Italian, English, Spanish, Romanian, Dutch, French and Chinese【中文】 so far...).
 
 **Download**
 

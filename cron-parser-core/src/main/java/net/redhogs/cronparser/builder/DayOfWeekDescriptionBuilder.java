@@ -92,4 +92,9 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
         return format;
     }
 
+    @Override
+    protected Boolean needSpaceBetweenWords() {
+        return options.isNeedSpaceBetweenWords();
+    }
+
 }

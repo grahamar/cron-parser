@@ -1,6 +1,7 @@
 package net.redhogs.cronparser.builder;
 
 import net.redhogs.cronparser.I18nMessages;
+import net.redhogs.cronparser.Options;
 
 import java.text.MessageFormat;
 
@@ -9,6 +10,11 @@ import java.text.MessageFormat;
  * @since 10 Dec 2012 14:10:43
  */
 public class SecondsDescriptionBuilder extends AbstractDescriptionBuilder {
+    private final Options options;
+
+    public SecondsDescriptionBuilder(Options options) {
+        this.options = options;
+    }
 
     @Override
     protected String getSingleItemDescription(String expression) {
@@ -28,6 +34,11 @@ public class SecondsDescriptionBuilder extends AbstractDescriptionBuilder {
     @Override
     protected String getDescriptionFormat(String expression) {
         return I18nMessages.get("at_x_seconds_past_the_minute");
+    }
+
+    @Override
+    protected Boolean needSpaceBetweenWords() {
+        return options.isNeedSpaceBetweenWords();
     }
 
 }

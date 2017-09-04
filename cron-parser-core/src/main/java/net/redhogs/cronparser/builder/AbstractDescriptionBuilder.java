@@ -1,6 +1,7 @@
 package net.redhogs.cronparser.builder;
 
 import net.redhogs.cronparser.I18nMessages;
+import net.redhogs.cronparser.Options;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -41,9 +42,13 @@ public abstract class AbstractDescriptionBuilder {
                     }
                 }
                 if ((i > 0) && (segments.length > 1) && ((i == (segments.length - 1)) || (segments.length == 2))) {
-                    descriptionContent.append(" ");
+                    if (needSpaceBetweenWords()) {
+                        descriptionContent.append(" ");
+                    }
                     descriptionContent.append(I18nMessages.get("and"));
-                    descriptionContent.append(" ");
+                    if (needSpaceBetweenWords()) {
+                        descriptionContent.append(" ");
+                    }
                 }
                 if (segments[i].contains("-")) {
                     String[] betweenSegments = segments[i].split("-");
@@ -85,6 +90,12 @@ public abstract class AbstractDescriptionBuilder {
     protected abstract String getDescriptionFormat(String expression);
 
     /**
+     * @param
+     * @return
+     */
+    protected abstract Boolean needSpaceBetweenWords();
+
+    /**
      * @param num
      * @param singular
      * @param plural
@@ -112,4 +123,12 @@ public abstract class AbstractDescriptionBuilder {
         return singular;
     }
 
+    /**
+     * @since https://github.com/grahamar/cron-parser/issues/48
+     * @param options
+     * @return
+     */
+    protected String getSpace(Options options){
+        return options.isNeedSpaceBetweenWords() ? " " : "";
+    }
 }
