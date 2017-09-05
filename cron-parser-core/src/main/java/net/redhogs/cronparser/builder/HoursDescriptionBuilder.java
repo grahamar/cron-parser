@@ -25,7 +25,7 @@ public class HoursDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format(I18nMessages.get("every_x")+" " +
+        return MessageFormat.format(I18nMessages.get("every_x")+ getSpace(options) +
                 plural(expression, I18nMessages.get("hour"), I18nMessages.get("hours")), expression);
     }
 
@@ -37,6 +37,11 @@ public class HoursDescriptionBuilder extends AbstractDescriptionBuilder {
     @Override
     protected String getDescriptionFormat(String expression) {
         return I18nMessages.get("at_x");
+    }
+
+    @Override
+    protected Boolean needSpaceBetweenWords() {
+        return options.isNeedSpaceBetweenWords();
     }
 
 }

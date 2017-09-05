@@ -1,6 +1,7 @@
 package net.redhogs.cronparser.builder;
 
 import net.redhogs.cronparser.I18nMessages;
+import net.redhogs.cronparser.Options;
 import org.joda.time.DateTime;
 
 import java.text.MessageFormat;
@@ -10,7 +11,11 @@ import java.text.MessageFormat;
  * @since 10 Dec 2012 14:23:50
  */
 public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
+    private final Options options;
 
+    public MonthDescriptionBuilder(Options options) {
+        this.options = options;
+    }
     @Override
     protected String getSingleItemDescription(String expression) {
         return new DateTime().withDayOfMonth(1).withMonthOfYear(Integer.parseInt(expression)).
@@ -19,7 +24,7 @@ public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format(", "+I18nMessages.get("every_x")+" " +
+        return MessageFormat.format(", "+I18nMessages.get("every_x")+ getSpace(options) +
                 plural(expression, I18nMessages.get("month"), I18nMessages.get("months")), expression);
     }
 
@@ -32,6 +37,11 @@ public class MonthDescriptionBuilder extends AbstractDescriptionBuilder {
     @Override
     protected String getDescriptionFormat(String expression) {
         return ", "+I18nMessages.get("only_in_month");
+    }
+
+    @Override
+    protected Boolean needSpaceBetweenWords() {
+        return options.isNeedSpaceBetweenWords();
     }
 
 }

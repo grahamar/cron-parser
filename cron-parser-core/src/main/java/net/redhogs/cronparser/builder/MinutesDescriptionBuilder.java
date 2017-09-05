@@ -2,6 +2,7 @@ package net.redhogs.cronparser.builder;
 
 import net.redhogs.cronparser.DateAndTimeUtils;
 import net.redhogs.cronparser.I18nMessages;
+import net.redhogs.cronparser.Options;
 
 import java.text.MessageFormat;
 
@@ -10,7 +11,11 @@ import java.text.MessageFormat;
  * @since 10 Dec 2012 14:11:11
  */
 public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
+    private final Options options;
 
+    public MinutesDescriptionBuilder(Options options) {
+        this.options = options;
+    }
     @Override
     protected String getSingleItemDescription(String expression) {
         return DateAndTimeUtils.formatMinutes(expression);
@@ -18,7 +23,7 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format(I18nMessages.get("every_x") + " " + minPlural(expression), expression);
+        return MessageFormat.format(I18nMessages.get("every_x") + getSpace(options) + minPlural(expression), expression);
     }
 
     @Override
@@ -28,8 +33,13 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return "0".equals(expression) ? "" : I18nMessages.get("at_x") + " " + minPlural(expression) +
-                " " + I18nMessages.get("past_the_hour");
+        return "0".equals(expression) ? "" : I18nMessages.get("at_x") + getSpace(options) + minPlural(expression) +
+                getSpace(options) + I18nMessages.get("past_the_hour");
+    }
+
+    @Override
+    protected Boolean needSpaceBetweenWords() {
+        return options.isNeedSpaceBetweenWords();
     }
 
     private String minPlural(String expression) {

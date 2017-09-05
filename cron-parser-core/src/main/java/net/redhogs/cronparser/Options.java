@@ -11,6 +11,8 @@ public class Options {
     private boolean verbose;
     private boolean zeroBasedDayOfWeek;
     private boolean twentyFourHourTime;
+    /** Chinese, Japanese, Korean and other East Asian languages have no spaces between words */
+    private boolean needSpaceBetweenWords;
 
     public Options() {
         this.throwExceptionOnParseError = true;
@@ -19,6 +21,7 @@ public class Options {
         // By default CRON expressions are zero-based
         this.zeroBasedDayOfWeek = true;
         this.twentyFourHourTime = false;
+        this.needSpaceBetweenWords = true;
     }
 
     public static Options twentyFourHour() {
@@ -113,4 +116,11 @@ public class Options {
         this.twentyFourHourTime = twentyFourHourTime;
     }
 
+    public boolean isNeedSpaceBetweenWords() {
+        return needSpaceBetweenWords;
+    }
+
+    public void setNeedSpaceBetweenWords(boolean needSpaceBetweenWords) {
+        this.needSpaceBetweenWords = needSpaceBetweenWords;
+    }
 }
