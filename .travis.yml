@@ -4,3 +4,40 @@ dist: trusty
 jdk:
   - openjdk8
   - openjdk7
+
+cache:
+  directories:
+    - ~/.m2/repository
+
+script: mvn test -B
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_d34e9bc71fa0_key -iv $encrypted_d34e9bc71fa0_iv -in codesigning.asc.enc -out codesigning.asc -d
+  - gpg --fast-import codesigning.asc
+
+install: mvn --settings .travis.settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+
+deploy:
+  -
+    provider: script
+    script: ./deploy.sh
+    skip_cleanup: true
+    on:
+      repo: grahamar/cron-parser
+      branch: master
+      jdk: openjdk7
+  -
+    provider: script
+    script: ./deploy.sh
+    skip_cleanup: true
+    on:
+      repo: grahamar/cron-parser
+      tags: true
+      jdk: openjdk7
+
+env:
+  global:
+    - secure: "M2NCIPyaQj5RKdlqjJ2LzRRbVQQNGevqqKDVqY+PO0b+oKH26yxvg+a8VgDvwliHZWOE+eg8eE/ef4c/ww2Z37kWuf7tYayp/S74L3tugnvFF78NQIwJRzfS/EVn3aG4DpJ7kRWUZQdcqfaHDfly2vu6F72qI+cGDtg7wZjy+0c="
+    - secure: "qunX7US+wg4nhMXURYermxYhtWD2N8kSyMb3CjO2Ap83TyIOux/IiDUV+dHpb45kgb60NKTTfh5JId+TnSbUjg5uFeo2l0XC2Oj3C6WV4We9FCIon+MCNQDtObTs+GEm0ypVPpWlXpHJWSnQlSoAwugsZ0t0WoEDhBH4J2R6gG0="
+    - secure: "SgNB8MXzi9XNTu4O42jMAN5tcnzjcWqfDuxploceBBTXhYXn+363dQwcG8wTCPM/WVkdlVXyg9Y6sf2cJv3IujE8f86afimB9aaATtvZ8rJ9DGZUKBUqu2YAppiC/R3pPjEbR3Ocm8adscYM06EHw35yiOsKQAh0gq+VLEqZxMo="
+    - secure: "bn8hFLekfwIxT2wPpx6BXPoz4HYaXbSD4yuBRJNhYQAO6Osy7TtJbu7n+IHpFdX10Va5vyzTdIq/hVjO01Jp/1E5MShD1IfAAuHfZ7zB/vol8FlLmyuZWK+UWzIUazY2RwX2TUUciCHNSqpGgjYR99leqRs2A7IgOU5b6ITjVGA="
