@@ -24,4 +24,4 @@ cron-parser is available in the [maven central repository](http://search.maven.o
 
 **Usage Examples (Unit Tests)**
 
-See cron-parser-core/src/test/java/com/gr/cronparser/CronExpressionDescriptorTest.java
+See [CronExpressionDescriptorTest](/cron-parser-core/src/test/java/net/redhogs/cronparser/CronExpressionDescriptorTest.java)
