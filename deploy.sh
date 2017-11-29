@@ -7,4 +7,9 @@ else
     echo "not on a tag -> keep snapshot version in pom.xml"
 fi
 
+# Decrypt code signing key
+openssl aes-256-cbc -K $encrypted_d34e9bc71fa0_key -iv $encrypted_d34e9bc71fa0_iv -in codesigning.asc.enc -out codesigning.asc -d
+gpg --fast-import codesigning.asc
+
+# Deploy to Maven repo
 mvn clean deploy --settings .travis.settings.xml -DskipTests=true -B -U

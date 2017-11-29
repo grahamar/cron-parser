@@ -11,10 +11,6 @@ cache:
 
 script: mvn test -B
 
-before_install:
-  - openssl aes-256-cbc -K $encrypted_d34e9bc71fa0_key -iv $encrypted_d34e9bc71fa0_iv -in codesigning.asc.enc -out codesigning.asc -d
-  - gpg --fast-import codesigning.asc
-
 install: mvn --settings .travis.settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 
 deploy:
