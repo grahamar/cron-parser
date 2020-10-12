@@ -66,7 +66,7 @@
 		<log4j.version>1.2.17</log4j.version>
 		<commonsLang.version>3.3.2</commonsLang.version>
 		<jodatime.version>2.3</jodatime.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.13.1</junit.version>
   	<spring.version>4.1.2.RELEASE</spring.version>
 
 		<github.global.server>github</github.global.server>
