@@ -9,9 +9,9 @@ cache:
   directories:
     - ~/.m2/repository
 
-script: mvn test -B
+script: mvn -T 1C test -B
 
-install: mvn --settings .travis.settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+install: mvn -T 1C --settings .travis.settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 
 deploy:
   -
